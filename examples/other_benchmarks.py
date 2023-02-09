@@ -40,7 +40,7 @@ runPWASp = 1-runPWAS
 # 2-D benchmarks with box and linear constraints (NLP)
 # benchmark='camelsixhumps-linearconstr' #camelsixhumps with 5 known linear constraints, optimal is at intersection
 # benchmark='camelsixhumps-linearconstr_2' #camelsixhumps with 5 known linear constraints
-benchmark = "Horst3" # 3 linear inequality constraints, optimal is at intersection
+# benchmark = "Horst3" # 3 linear inequality constraints, optimal is at intersection
 # benchmark = "s232" # 3 linear inequality constraints, optimal is at intersection
 
 
@@ -53,7 +53,7 @@ benchmark = "Horst3" # 3 linear inequality constraints, optimal is at intersecti
 # benchmark = "hs044"  # 4-D, 6 linear inequality constraints, optimal is at intersection (20 vertices)
 # benchmark = "hs076"  # 4-D, 3 linear inequality constraints
 # benchmark = "Bunnag3" # 5-D, 3 linear inequality constraints, optimal is at intersection
-# benchmark = "Bunnag6"  # 10-D, 11 linear inequality constraints, excessive number of vertices (1036)
+benchmark = "Bunnag6"  # 10-D, 11 linear inequality constraints, excessive number of vertices (1036)
 # benchmark = "Bunnag7" # 10-D, 5 linear inequality constraints, optimal is at intersection, excessive number of vertices (594)
 # benchmark = "Genocop9"  # 3-D, 5 linear inequality constraints, optimal is at intersection
 # benchmark = "Genocop11" # 6-D, 5 linear inequality constraints, optimal is at intersection (92 vertices)
@@ -132,7 +132,7 @@ elif benchmark == "ackley":
 
     fun = lambda x: array([-20.0 * exp(-.2 * sqrt(0.5 * (x[0] ** 2 + x[1] ** 2))) - exp(
         0.5 * (cos(2.0 * pi * x[0]) + cos(2.0 * pi * x[1]))) + exp(1.0) + 20.0])
-    maxevals = 50
+    maxevals = 100
 
     # compute optimum/optimizer by PSO
     # from pyswarm import pso # https://pythonhosted.org/pyswarm/
