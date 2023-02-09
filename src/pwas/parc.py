@@ -15,6 +15,7 @@ from mip import *  # this is only required by the "optimize" method
 import polytope  # this is only required by the "plot_partition" method
 import matplotlib.pyplot as plt  # this is only required by the "plot_partition" method
 import faiss  # this is only required by "parc_init" method for k-nearest neighbors finding
+import pickle # this is only required for load and save operations
 
 
 class PARC:
@@ -121,16 +122,12 @@ class PARC:
         try:
             softmax_reg.fit(X, delta)
         except:
-            if not len(np.unique(delta)) == 1:
-                softmax_reg.warm_start = False  # new problem has different number of classes, disable warm start
-                softmax_reg.fit(X, delta)
-                softmax_reg.warm_start = True
+            softmax_reg.warm_start = False  # new problem has different number of classes, disable warm start
+            softmax_reg.fit(X, delta)
+            softmax_reg.warm_start = True
         if len(np.unique(delta)) > 2:
             omega1 = softmax_reg.coef_
             gamma1 = softmax_reg.intercept_
-        elif len(np.unique(delta)) == 1:
-            omega1 = np.zeros((1, X.shape[1]))
-            gamma1 = np.zeros(1)
         else:
             omega1 = np.zeros((2, X.shape[1]))
             gamma1 = np.zeros(2)
@@ -201,11 +198,9 @@ class PARC:
             # Given current cluster of points indexed by vector ii,
             # compute ridge regression/softmax regression problems, one per target
 
-            alphaj = alpha * Nk[j] / N
             if not np.all(categorical):
                 # Initialize ridge regressor
-                ridge = Ridge(alpha=alphaj, fit_intercept=True, normalize=False)
-                # Initialize softmax regressor for logistic regression)
+                ridge = Ridge(alpha=alpha, fit_intercept=True)
 
             h = 0
             for i in range(ny):
@@ -216,7 +211,6 @@ class PARC:
                     h += 1
                 else:
                     softmax_reg = softmax_regs[j][i]
-                    softmax_reg.C = 0.5 / alphaj
 
                     tot_elems = cat_values[i]  # categories in entire dataset
                     elems = np.unique(Yt[ii, i])  # categories in this cluster (ordered)
@@ -487,7 +481,6 @@ class PARC:
                     lin_terms = np.zeros(K)
                 for j in range(K):
                     if not killed[j]:
-
                         # Get Vy function
                         for i in range(ny):
                             if not categorical[i]:
@@ -804,7 +797,7 @@ class PARC:
         delta = [m.add_var(name="delta({})".format(j), var_type=BINARY)
                  for j in range(K)]
         p = [[m.add_var(name="p({},{})".format(j, i), var_type=CONTINUOUS)
-              for i in range(nx)] for j in range(K)]
+              for i in range(ny)] for j in range(K)]
         y = [m.add_var(name="y({})".format(i), var_type=CONTINUOUS)
              for i in range(ny)]
 
@@ -818,7 +811,8 @@ class PARC:
                                   for h in range(nx)) - gamma[j] + gamma[i]
 
         # Exclusive-or constraint
-        m.add_sos([(delta[i], i) for i in range(K)], 1)
+        #m.add_sos([(delta[i], i) for i in range(K)], 1)
+        m.add_constr(xsum(delta[i] for i in range(K)) == 1.0)
 
         # big-M constraint for PWL partition
         for j in range(K):
@@ -828,7 +822,7 @@ class PARC:
                                  <= gamma[j] - gamma[i] + M[j, i] * (1 - delta[j]),
                                  "pwl-j=%d,i=%d" % (j, i))
 
-        # Compute big-M for partition
+        # Compute big-M for yc
         Mcp = np.zeros((K, ny))
         Mcm = np.zeros((K, ny))
 
@@ -920,17 +914,17 @@ class PARC:
             fontsize = 12
 
         omega = self.omega
-        gamma = self.gamma + omega[:, ind] @ values
+        gamma = self.gamma + (omega[:, ind] @ values).ravel()
         omega = np.delete(omega, ind, axis=1)
         xbar = np.delete(self.xbar, ind, axis=1)
         K = self.K
 
         # Plot PWL partition
-        A = np.vstack((np.eye(nx), -np.eye(nx), np.zeros((K - 1, nx))))
+        A = np.vstack((np.eye(2), -np.eye(2), np.zeros((K - 1, 2))))
         B = np.vstack((np.array([xmax[0], xmax[1], -xmin[0], -xmin[1]]).reshape(4, 1),
                        np.zeros((K - 1, 1))))
         for j in range(0, K):
-            i = 2 * nx
+            i = 4
             for h in range(0, K):
                 if h != j:
                     A[i, :] = omega[h, :] - omega[j, :]
@@ -1098,3 +1092,34 @@ class PARC:
         self.verbose = selfverbose
 
         return best_K, results
+
+    def save(self, filename):
+        '''
+        PARC - Save PARC predictor to file.
+        (C) 2021 A. Bemporad.
+
+        Parameters:
+        ----------
+        filename : string filename (without extension) the predictor must be saved to.
+        '''
+
+        pickle.dump(vars(self), open(filename, "wb"))
+
+        return
+
+    def load(self, filename):
+        '''
+        PARC - Load PARC predictor from file.
+        (C) 2021 A. Bemporad.
+
+        Parameters:
+        ----------
+        filename : string filename (without extension) the predictor must be loaded from.
+        '''
+
+        saved = pickle.load(open(filename, "rb"))
+        keys = list(saved.keys())
+        for i in range(len(keys)):
+            setattr(self, keys[i], saved[keys[i]])
+
+        return
