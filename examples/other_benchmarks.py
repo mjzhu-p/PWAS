@@ -1,8 +1,11 @@
 """
-NLP Benchmarks tested with PWAS/PWASp [1]
+NLP, MIP, INLP, MIP Benchmarks tested with PWAS/PWASp [1]
 
 NLP problems taking from DIRECTGOLib - DIRECT Global Optimization test problems Library [2]
     https://github.com/blockchain-group/DIRECTGOLib/tree/v1.1
+
+MIP problems taken from # http://miplib.zib.de/index.html and https://www.minlplib.org/
+
 
 [1] TODO: add the reference to the arxiv paper of PWAS/PWASp
 [2] Stripinis, Linas, and Remigijus Paulavičius. "DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization."
@@ -37,7 +40,7 @@ runPWASp = 1-runPWAS
 # 2-D benchmarks with box and linear constraints (NLP)
 # benchmark='camelsixhumps-linearconstr' #camelsixhumps with 5 known linear constraints, optimal is at intersection
 # benchmark='camelsixhumps-linearconstr_2' #camelsixhumps with 5 known linear constraints
-# benchmark = "Horst3" # 3 linear inequality constraints, optimal is at intersection
+benchmark = "Horst3" # 3 linear inequality constraints, optimal is at intersection
 # benchmark = "s232" # 3 linear inequality constraints, optimal is at intersection
 
 
@@ -55,15 +58,15 @@ runPWASp = 1-runPWAS
 # benchmark = "Genocop9"  # 3-D, 5 linear inequality constraints, optimal is at intersection
 # benchmark = "Genocop11" # 6-D, 5 linear inequality constraints, optimal is at intersection (92 vertices)
 
-# Mixed integer problems
+# Mixed integer problems # https://www.minlplib.org/
 # benchmark = 'ex1222'  # two continuous variables and one binary variable
 # benchmark = 'ex_int'  # two continuous variables, one integer variable and one binary variable
 
 # MIP from MIP library # http://miplib.zib.de/index.html
 # benchmark = "gen-ip054"  # 30 integer variables
-benchmark = "gen-ip054_2"  # treat integer variable as categorical variable
+# benchmark = "gen-ip054_2"  # treat integer variable as categorical variable
 
-# INLP
+# INLP # https://www.minlplib.org/
 # benchmark = 'nvs04'  # two integer variables
 
 # Other MIP problems
