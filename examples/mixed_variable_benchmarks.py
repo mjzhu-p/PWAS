@@ -4,7 +4,9 @@
 
 The results are reported in [1]
 
-[1] TODO: add the reference to the arxiv paper of PWAS/PWASp
+[1] M. Zhu and A. Bemporad, “Global and Preference-based Optimization
+    with Mixed Variables using Piecewise Affine Surrogates,”
+     arXiv preprint arXiv:TODO, 2023.
 [2] Ru, Binxin, Ahsan Alvi, Vu Nguyen, Michael A. Osborne, and Stephen Roberts.
 "Bayesian optimisation over multiple continuous and categorical inputs."
 In International Conference on Machine Learning, pp. 8276-8285. PMLR, 2020.

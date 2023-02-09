@@ -1,6 +1,10 @@
 """
 PWASp -  Preference-based optimization with mixed variables using Piecewise Affine surrogate
 
+[1] M. Zhu and A. Bemporad, “Global and Preference-based Optimization
+    with Mixed Variables using Piecewise Affine Surrogates,”
+     arXiv preprint arXiv:TODO, 2023.
+
 reference code:
                 - parc.py by A. Bemporad, 2021, http://cse.lab.imtlucca.it/~bemporad/parc/
                 - GLIS package by A.Bemporad & M. Zhu, 2023, https://github.com/bemporad/GLIS
@@ -26,8 +30,11 @@ class PWASp:
                     - but when query the next point, integer variables are considered as integer variables to enhance constraint satisfication
                 - categorical variables, i.e., one-hot encoded if the number of possible integer values are small
                     - the relevant constraints are updated accordingly (see prob_setup.py for more details)
-            - only need to SPECIFY the lb and ub of continuous and integer variables
-                - the bounds for the categorical variables are set to [0,1] since they are one-hot encoded to binary variables
+            - Each categorical variable need to be first ordinal encoded as 0 to X_d[i] when specify the problem, then
+                - Specify the lower and upper bounds of the categorical variables as follows:
+                    - Lower bounds: 0
+                    - Upper bounds: X_d[i] -1  (number of possible classes for that caategorical variable -1)
+                    - This is to ease the random sample generation in sample.py (generate then encode)
             - If the problem is linearly equality/inequality constrained, when provide the coefficient matrix Aeq/Aineq,
                 do not forget to include the columns for EACH options of the categorical variables, if categorical variable exists
             - fit_surrogate_pwasp.py is used to fit the PWA surrogate
@@ -145,11 +152,8 @@ class PWASp:
         self.AL = active_learn(self.prob)
 
         self.isInitialized = False
-        self.X = list()
-        self.Xs = list()
-        self.F = list()
-        self.Fmin = np.inf
-        self.Fmax = -np.inf
+        self.X = list()  # decision variable in the original format (X in the paper)
+        self.Xs = list()  # the scaled and/or encoded decision vector (\bar X in the paper)
         self.iter = 0
         self.xnext = None
         self.xsnext = None
@@ -157,12 +161,11 @@ class PWASp:
         self.ibest = None
         self.xbest = None
         self.xsbest = None
-        self.fbest_seq = list()
-        self.ibest_seq = list()
-        self.isfeas_seq = list()
-        self.time_fun_eval = list()
-        self.time_opt_acquisition = list()
-        self.time_fit_surrogate = list()
+        self.ibest_seq = list()  # keep track of the index of the current best decision vector
+        self.isfeas_seq = list()  # keep track of the feasibility of the tested decision vectors
+        self.time_fun_eval = list()  # keep track of the CPU time used to evaluation one function/simulation/experiment
+        self.time_opt_acquisition = list() # keep track of the CPU time used to optimize the acq. fun. at each iteration
+        self.time_fit_surrogate = list() # keep track of the CPU time used to fit the surrogate fun. at each iteration
         self.I = list()
         self.Ieq = list()
 

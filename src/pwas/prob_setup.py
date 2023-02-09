@@ -42,6 +42,11 @@ class problem_defn:
             print(errstr_inf)
             sys.exit(1)
 
+        if lb.shape[0] != self.nvars or ub.shape[0] != self.nvars:
+            errstr_bd_shape = "Please specify the lower and upper bounds for all types of variables. Check the Notes in 'main_pwas.py' or 'main_pwasp for how to specify the bounds for the categorical variables"
+            print(errstr_bd_shape)
+            sys.exit(1)
+
         lb_encoded = np.zeros(self.nvars_encoded)
         ub_encoded = np.ones(self.nvars_encoded)
         lb_encoded[:self.nci] = lb[:self.nci]
