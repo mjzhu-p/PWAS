@@ -17,7 +17,7 @@ remains unquantified. For more details on the method, please read our paper [Glo
 ### Usage:
 Examples of benchmark testing using PWAS/PWASp can be found in the `examples` folder:
 * `other_benchmarks.py`: various NLP, MIP, INLP, MIP Benchmarks tested with PWAS/PWASp
-  * Test results are also show in [TODO: add the document link to the NLP benchmark results]
+  * Test results are reported in [test_results_on_other_benchmarks.pdf](https://github.com/mjzhu-p/PWAS/blob/main/examples/test_results_on_other_benchmarks.pdf) under the `examples` folder 
 * `mixed_variable_benchmarks.py`: benchmark testing on constrained mixed-variable problems
   * Test results are reported in the [paper](add arxiv link)
   
