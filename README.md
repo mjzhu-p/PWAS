@@ -33,7 +33,7 @@ Please cite our paper if you would like to use the code.
 @article{ZB23,
     author={M. Zhu, A. Bemporad},
     title={Global and Preference-based Optimization with Mixed Variables using Piecewise Affine Surrogates},
-    journal={arXiv preprint arXiv:to added},
+    journal={arXiv preprint arXiv:2302.04686},
     year=2023
 }
 ```
