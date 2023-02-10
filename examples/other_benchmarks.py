@@ -7,7 +7,8 @@ NLP problems taking from DIRECTGOLib - DIRECT Global Optimization test problems 
 MIP problems taken from # http://miplib.zib.de/index.html and https://www.minlplib.org/
 
 
-[1] TODO: add the reference to the arxiv paper of PWAS/PWASp
+[1] M. Zhu and A. Bemporad, “Global and Preference-based Optimization with Mixed Variables using Piecewise Affine Surrogates,”
+     arXiv preprint arXiv:2302.04686, 2023.
 [2] Stripinis, Linas, and Remigijus Paulavičius. "DIRECTGO: A new DIRECT-type MATLAB toolbox for derivative-free global optimization."
     ACM Transactions on Mathematical Software 48.4 (2022): 1-46.
 

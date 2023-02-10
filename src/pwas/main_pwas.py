@@ -3,7 +3,7 @@ PWAS -  Optimization with mixed variables using Piecewise Affine surrogate
 
 [1] M. Zhu and A. Bemporad, “Global and Preference-based Optimization
     with Mixed Variables using Piecewise Affine Surrogates,”
-     arXiv preprint arXiv:TODO, 2023.
+     arXiv preprint arXiv:2302.04686, 2023.
 
 reference code:
                 - parc.py by A. Bemporad, 2021, http://cse.lab.imtlucca.it/~bemporad/parc/
