@@ -278,7 +278,7 @@ class init_sampl:
                 ii = np.where(ii)
                 Xs[0:nsamp, :nvars] = XX[ii[0][0:nsamp],]
                 X_sampl_decoded = Xs[0:nsamp, :nvars].copy()
-                if nd > 0:
+                if self.int_encoded or nd > 0:
                     X_sampl_encoded = XX_encoded[ii[0][0:nsamp],]
                     Xs[0:nsamp, :] = X_sampl_encoded
             else:
