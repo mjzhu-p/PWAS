@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='PWAS',
+    name='pwas',
     version='0.0.1',
     author= 'Mengjia Zhu, Alberto Bemporad',
     author_email='mengjia.zhu@imtlucca.it, alberto.bemporad@imtlucca.it',
@@ -17,6 +17,6 @@ setuptools.setup(
         "PWAS/PWASp": "https://github.com/mjzhu-p/PWAS.git"
     },
     license='Apache-2.0',
-    packages=['PWAS'],
+    packages=['pwas'],
     install_requires=['numpy','scipy','math','pulp','sklearn','pyDOE','cdd'],
 )
