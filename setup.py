@@ -19,5 +19,5 @@ setuptools.setup(
     },
     license='Apache-2.0',
     py_modules=['src/pwas'],
-    install_requires=['numpy','scipy','math','pulp','sklearn','pyDOE','cdd'],
+    install_requires=['numpy','scipy','pulp','sklearn','pyDOE','cdd'],
 )
