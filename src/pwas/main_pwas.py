@@ -11,7 +11,6 @@ reference code:
 
 (C) 2021-2023 Mengjia Zhu, Alberto Bemporad
 """
-import numpy as np
 
 from src.pwas.parc import PARC
 from src.pwas.prob_setup import *

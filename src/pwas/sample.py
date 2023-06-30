@@ -4,7 +4,6 @@ Generate initial samples for the surrogate fitting
 (C) 2021-2023 Mengjia Zhu, Alberto Bemporad
 """
 
-import numpy as np
 import math as mt
 from pyDOE import lhs #https://pythonhosted.org/pyDOE/
 import pulp as plp
