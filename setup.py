@@ -1,6 +1,7 @@
 
 import setuptools
 
+
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
@@ -17,6 +18,6 @@ setuptools.setup(
         "PWAS/PWASp": "https://github.com/mjzhu-p/PWAS"
     },
     license='Apache-2.0',
-    packages=['PWAS'],
+    py_modules=['src/pwas'],
     install_requires=['numpy','scipy','math','pulp','sklearn','pyDOE','cdd'],
 )
