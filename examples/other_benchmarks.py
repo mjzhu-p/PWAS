@@ -15,8 +15,8 @@ MIP problems taken from # http://miplib.zib.de/index.html and https://www.minlpl
 Authors: M. Zhu, A. Bemporad
 """
 
-from src.pwas.main_pwas import PWAS
-from src.pwas.main_pwasp import PWASp
+from pwas.main_pwas import PWAS
+from pwas.main_pwasp import PWASp
 
 from numpy import array, zeros, ones
 import numpy as np

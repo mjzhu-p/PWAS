@@ -14,10 +14,10 @@ In International Conference on Machine Learning, pp. 8276-8285. PMLR, 2020.
 Authors: M. Zhu, A. Bemporad
 """
 
-from src.pwas.main_pwas import PWAS
-from src.pwas.main_pwasp import PWASp
-from src.pwas.pref_fun1 import PWASp_fun1
-from src.pwas.pref_fun import PWASp_fun
+from pwas.main_pwas import PWAS
+from pwas.main_pwasp import PWASp
+from pwas.pref_fun1 import PWASp_fun1
+from pwas.pref_fun import PWASp_fun
 
 from numpy import array, zeros, ones
 import numpy as np

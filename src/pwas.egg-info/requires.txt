@@ -1,0 +1,6 @@
+numpy
+scipy
+pulp
+pyDOE
+sklearn
+cdd
