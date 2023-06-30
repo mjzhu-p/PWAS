@@ -3,4 +3,4 @@ scipy
 pulp
 pyDOE
 sklearn
-cdd
+pycddlib

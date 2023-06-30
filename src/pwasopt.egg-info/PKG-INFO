@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
-Name: pwas
-Version: 0.0.3
+Name: pwasopt
+Version: 0.0.1
 Summary: PWAS/PWASp - Global and Preference-based Optimization with Mixed Variables using (P)iece(w)ise (A)ffine (S)urrogates
 Author-email: Mengjia Zhu <mengjia.zhu@imtlucca.it>, Alberto Bemporad <alberto.bemporad@imtlucca.it>
 Project-URL: Homepage, https://github.com/mjzhu-p/PWAS

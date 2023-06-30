@@ -8,8 +8,8 @@ import numpy as np
 from scipy.optimize import linprog as linprog
 import sys
 
-from src.pwas.pref_fun1 import PWASp_fun1
-from src.pwas.pref_fun import PWASp_fun
+from src.pwasopt.pref_fun1 import PWASp_fun1
+from src.pwasopt.pref_fun import PWASp_fun
 
 
 class problem_defn:
