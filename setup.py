@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='pwas',
-    version='0.0.1',
+    # version='0.0.1',
     author= 'Mengjia Zhu, Alberto Bemporad',
     author_email='mengjia.zhu@imtlucca.it, alberto.bemporad@imtlucca.it',
     description='PWAS/PWASp - Global and Preference-based Optimization with Mixed Variables using (P)iece(w)ise (A)ffine (S)urrogates',
