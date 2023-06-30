@@ -10,8 +10,8 @@ import pulp as plp
 import cdd  #https://pypi.org/project/pycddlib/
 import random
 
-from src.pwasopt.categorical_encoder import *
-from src.pwasopt.integ_encoder import *
+from pwasopt.categorical_encoder import *
+from pwasopt.integ_encoder import *
 
 class init_sampl:
 

@@ -12,12 +12,12 @@ reference code:
 (C) 2021-2023 Mengjia Zhu, Alberto Bemporad
 """
 
-from src.pwasopt.parc import PARC
-from src.pwasopt.prob_setup import *
-from src.pwasopt.sample import *
-from src.pwasopt.acquisition import *
-from src.pwasopt.categorical_encoder import *
-from src.pwasopt.integ_encoder import *
+from pwasopt.parc import PARC
+from pwasopt.prob_setup import *
+from pwasopt.sample import *
+from pwasopt.acquisition import *
+from pwasopt.categorical_encoder import *
+from pwasopt.integ_encoder import *
 
 import time
 
