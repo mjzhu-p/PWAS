@@ -17,6 +17,6 @@ setuptools.setup(
         "PWAS/PWASp": "https://github.com/mjzhu-p/PWAS"
     },
     license='Apache-2.0',
-    packages=['pwas'],
+    packages=['PWAS'],
     install_requires=['numpy','scipy','math','pulp','sklearn','pyDOE','cdd'],
 )
