@@ -12,9 +12,9 @@ setuptools.setup(
     description='PWAS/PWASp - Global and Preference-based Optimization with Mixed Variables using (P)iece(w)ise (A)ffine (S)urrogates',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://github.com/mjzhu-p/PWAS.git',
+    url='https://github.com/mjzhu-p/PWAS',
     project_urls = {
-        "PWAS/PWASp": "https://github.com/mjzhu-p/PWAS.git"
+        "PWAS/PWASp": "https://github.com/mjzhu-p/PWAS"
     },
     license='Apache-2.0',
     packages=['pwas'],
