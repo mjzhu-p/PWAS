@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pwasopt
-Version: 0.0.4
+Version: 0.0.5
 Summary: PWAS/PWASp - Global and Preference-based Optimization with Mixed Variables using (P)iece(w)ise (A)ffine (S)urrogates
 Author-email: Mengjia Zhu <mengjia.zhu@imtlucca.it>, Alberto Bemporad <alberto.bemporad@imtlucca.it>
 Project-URL: Homepage, https://github.com/mjzhu-p/PWAS
@@ -55,6 +55,10 @@ pip install pwasopt
 * [pyparc](https://pypi.org/project/pyparc/)
 * [pyDOE](https://pythonhosted.org/pyDOE/)
 * [pycddlib](https://pypi.org/project/pycddlib/)
+
+**Note**: PWAS/PWASp use `GUROBI` as the default solver to solve the MILP problem of acquisition optimization, 
+which is found to be the most robust during benchmark testing. Alternatively, we also include `GLPK`, which may introduce
+errors occasionally depending on the test problem and initial samples.
 
 
 <a name="basic-usage"></a>
