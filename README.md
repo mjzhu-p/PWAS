@@ -17,6 +17,7 @@
 
 <a name="description"></a>
 ## Package description
+
 We propose a novel surrogate-based global optimization algorithm, called PWAS, based on constructing a piecewise affine surrogate of the objective function over feasible samples. We introduce two types of exploration functions to efficiently search the feasible domain via mixed integer linear programming (MILP) solvers. We also provide a preference-based version of the algorithm, called PWASp, which can be used when only pairwise comparisons between samples can be acquired while the objective function
 remains unquantified. For more details on the method, please read our paper [Global and Preference-based Optimization with Mixed Variables using Piecewise Affine Surrogates](http://arxiv.org/abs/2302.04686). 
 
@@ -26,7 +27,7 @@ remains unquantified. For more details on the method, please read our paper [Glo
 <a name="install"></a>
 ## Installation
 
-~~~python
+~~~code
 pip install pwasopt
 ~~~
 
@@ -44,7 +45,24 @@ pip install pwasopt
 
 <a name="basic-usage"></a>
 ## Basic usage
+We show an example using PWAS/PWASp to optimize the parameters of the [`xgboost` algorithm](https://xgboost.readthedocs.io/en/stable/) for [`MNIST` classification](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html) task. 
 
+### Problem discription
+The 0.7/0.3 stratified train/test split ratio is applied. 
+The `xgboost` package is used on `MNIST` classification. 
+The optimization variables in this problem are the parameters of the `xgboost` algorithm.
+Specifically, the continuous variables $x_1$, $x_2$, $x_3$, and $x_4$ refer to the following parameters in `xgboost`, 
+respectively: `learning_rate`, `min_split_loss`, `subsample` , and `reg_lambda`. 
+The integer variable $y$ stands for the `max_depth`. As for the categorical variables, $n_{d1}$ indicates the booster type in 
+`xgboost` where $n_{d1} = \{0, 1\}$ corresponding to {`gbtree`, `dart`}. $n_{d2}$ represents the `grow_policy`, 
+where $n_{d2} = \{0, 1\}$ corresponding to {`depthwise`, `lossguide`}. 
+$n_{d3}$ refers to the `objective`, where $n_{d3} = \{0, 1\}$ corresponding to {`multi:softmax`, `multi:softprob`}.
+
+### Use PWAS
+~~~python
+from pwasopt.main_pwas import PWAS
+
+~~~
 
 ### Examples
 Examples of benchmark testing using PWAS/PWASp can be found in the `examples` folder:
