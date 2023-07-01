@@ -109,8 +109,10 @@ class fit_surrogate:
                 prob_param += reg_para >= -a[j][i]
                 prob_param += reg_para >= a[j][i]
 
-
-        prob_param.solve(plp.GUROBI(timeLimit=timelimit, msg=0))
+        try:
+            prob_param.solve(plp.GUROBI(timeLimit=timelimit, msg=0))
+        except:
+            prob_param.solve(plp.GLPK(timeLimit=timelimit, msg=0))
 
         status = prob_param.status
 

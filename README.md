@@ -42,6 +42,10 @@ pip install pwasopt
 * [pyDOE](https://pythonhosted.org/pyDOE/)
 * [pycddlib](https://pypi.org/project/pycddlib/)
 
+**Note**: PWAS/PWASp use `GUROBI` as the default solver to solve the MILP problem of acquisition optimization, 
+which is found to be the most robust during benchmark testing. Alternatively, we also include `GLPK`, which may introduce
+errors occasionally depending on the test problem and initial samples.
+
 
 <a name="basic-usage"></a>
 ## Basic usage
