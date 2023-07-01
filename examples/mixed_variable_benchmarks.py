@@ -27,7 +27,7 @@ import sys
 runPWAS = 1   #0 = run PWASp, 1 = run PWAS
 runPWASp = 1-runPWAS
 
-savefigs = True
+savefigs = False
 
 # synthetic benchmark from Ru's paper, reference: https://github.com/rubinxin/CoCaBO_code
 # benchmark = 'Func-2C'
@@ -35,11 +35,11 @@ savefigs = True
 # benchmark = 'Ackley-cC'
 
 # real-world problems from Ru's paper, reference: https://github.com/rubinxin/CoCaBO_code
-benchmark = 'XG-MNIST'
+# benchmark = 'XG-MNIST'
 # benchmark = 'NAS-CIFAR10'
 
 # synthetic constrained benchmark
-# benchmark = 'Horst6_hs044_modified'  # 3 continuous variables, 4 integer variable, 2 categorical variable
+benchmark = 'Horst6_hs044_modified'  # 3 continuous variables, 4 integer variable, 2 categorical variable
 # benchmark = 'roscam_modified'  # 2 continuous variables, 1 integer variable, 2 categorical variable
 
 # default setting for the benchmarks
