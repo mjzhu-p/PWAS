@@ -27,17 +27,19 @@ import sys
 runPWAS = 1   #0 = run PWASp, 1 = run PWAS
 runPWASp = 1-runPWAS
 
+savefigs = True
+
 # synthetic benchmark from Ru's paper, reference: https://github.com/rubinxin/CoCaBO_code
 # benchmark = 'Func-2C'
 # benchmark = 'Func-3C'
 # benchmark = 'Ackley-cC'
 
 # real-world problems from Ru's paper, reference: https://github.com/rubinxin/CoCaBO_code
-# benchmark = 'XG-MNIST'
+benchmark = 'XG-MNIST'
 # benchmark = 'NAS-CIFAR10'
 
 # synthetic constrained benchmark
-benchmark = 'Horst6_hs044_modified'  # 3 continuous variables, 4 integer variable, 2 categorical variable
+# benchmark = 'Horst6_hs044_modified'  # 3 continuous variables, 4 integer variable, 2 categorical variable
 # benchmark = 'roscam_modified'  # 2 continuous variables, 1 integer variable, 2 categorical variable
 
 # default setting for the benchmarks
@@ -636,10 +638,48 @@ elif runPWAS:
     X2 = np.array(optimizer2.X[:-1])  # it is because in prob.update, it will calculate the next point to query (the last x2 is calculated at max_evals +1)
     xopt2 = optimizer2.xbest
     fopt2 = optimizer2.fbest
+    X2 = np.array(optimizer2.X)
+    fbest_seq2 = optimizer2.fbest_seq
 ##########################################
 
+# plotting libraries
+from numpy import arange, meshgrid
+import matplotlib.pyplot as plt
 
+plt.plot(arange(0, maxevals), fbest_seq1, color=(.6, 0, 0), linewidth=1.0)
+plt.scatter(arange(0, maxevals), fbest_seq1, color=(.6, 0, 0), marker='o', linewidth=1.0)
 
+if runPWASp:
+    plt.xlabel("preference queries")
+    thelegend = ["PWASp"]
+elif runPWAS:
+    plt.xlabel("number of fun. eval.")
+    thelegend = ["PWAS"]
+plt.title("Best value of latent function")
+
+try:
+    if not (isLin_ineqConstrained or isLin_eqConstrained):
+        plt.plot(arange(0, maxevals), fopt0 * ones(maxevals), linestyle='--',
+                 color=(0, 0, .6), linewidth=2.0)
+    else:
+        plt.plot(arange(0, maxevals), fopt_const * ones(maxevals), linestyle='--',
+                 color=(0, 0, .6), linewidth=2.0)
+except:
+    pass
+
+plt.grid()
+thelegend.append("optimum")
+plt.legend(thelegend)
+
+if savefigs:
+    if runPWAS:
+        solverName = "PWAS"
+    else:
+        solverName = "PWASp"
+
+    plt.savefig("%s.png" %(solverName+'_'+ benchmark), dpi=300)
+
+plt.show()
 
 
 
