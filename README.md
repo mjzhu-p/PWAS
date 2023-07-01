@@ -239,6 +239,7 @@ the expressed preference `pref_eval` step-by step.
 
 _Note_: for this example, we use `fun` as a **synthetic decision maker** (`synthetic_dm = True`) to express preferences. However, the explicit evaluation of `fun` is unknow to PWASp.
 
+When solve by **explicitly** passing the preference indicator:
 - If `synthetic_dm = True`, we have included two preference indicator functions `pref_fun.py` and `pref_fun1.py` 
 to provide preferences based on function evaluations and constraint satisfaction.
 - If `synthetic_dm = False`, one need to pass a `fun` such that given two decision vectors,
@@ -261,7 +262,7 @@ optimizer1 = PWASp(fun, lb, ub, delta_E, nc, nint, nd, X_d, nsamp, maxevals, fea
 
 xopt1 = optimizer1.solve()
 X1 = np.array(optimizer1.X)
-fbest_seq1 = list(map(fun, X1[optimizer1.ibest_seq]))
+fbest_seq1 = list(map(fun, X1[optimizer1.ibest_seq]))  # for synthetic problems, we can obtain the function evaluation for assessment of the solver
 fbest1 = min(fbest_seq1)
 ~~~
 
@@ -295,7 +296,7 @@ fbest_seq2 = list(map(fun, X2[optimizer2.ibest_seq]))
 fbest2 = min(fbest_seq2)
 
 ~~~
-Below we show the best values `fbest_seq1` found by PWAS. 
+Below we show the best values `fbest_seq1` found by PWASp. Note that function evaluations here are shown solely for demonstration purposes, which are unknown to PWASp during the solution process.
 
 <p align = "center">
 <img src="./figures/PWASp_XG-MNIST.png" alt="drawing" width=60%/>
@@ -318,8 +319,9 @@ _Note_:  current package only supports **linear** equality/inequality constraint
 
 ~~~python
 # if there is equality constraints
-isLin_eqConstrained = True
+isLin_eqConstrained = True  #(Aeq x  = beq)
 
+# specify the constraint matrix and right-hand-side vector
 if isLin_eqConstrained:  # an example
     Aeq = np.array([1.6295, 1])
     beq = np.array([3.0786])
@@ -348,18 +350,12 @@ if isLin_ineqConstrained:  # an example
 This package was coded by Mengjia Zhu with supervision from Prof. Alberto Bemporad.
 
 
-This software is distributed without any warranty. Please cite the above papers if you use this software.
+This software is distributed without any warranty. Please cite the paper below if you use this software.
 
 <a name="bibliography"><a>
 ## Citing PWAS/PWASp
 
-<a name="ref1"></a> 
-
-Please cite ur paper if you would like to use the code.
-
-
 <a name="ref1"></a>
-
 ```
 @article{ZB23,
     author={M. Zhu, A. Bemporad},
