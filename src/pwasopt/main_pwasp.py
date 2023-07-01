@@ -6,7 +6,7 @@ PWASp -  Preference-based optimization with mixed variables using Piecewise Affi
      arXiv preprint arXiv:2302.04686, 2023.
 
 reference code:
-                - parc.py by A. Bemporad, 2021, http://cse.lab.imtlucca.it/~bemporad/parc/
+                - PARC package by A. Bemporad, 2021, http://cse.lab.imtlucca.it/~bemporad/parc
                 - GLIS package by A.Bemporad & M. Zhu, 2023, https://github.com/bemporad/GLIS
 
 (C) 2021-2023 Mengjia Zhu, Alberto Bemporad
@@ -108,7 +108,8 @@ class PWASp:
             if True, shrink the continuous and integer variables further according to the linear equality constraints
             if Flase, shrink range is not performed
 
-        PARC related parameters, see the definition in parc.py:
+        PARC related parameters, see the definition in PARC package:
+            Note: not used in PWASp, placeholder, used in PWAS, see main_pwas.py for more details
             alpha, sigma, separation, maxiter, cost_tol, min_number, fit_on_partition, softmax_solver, softmax_maxiter, beta,
                 initialization, verbose, categorical
 

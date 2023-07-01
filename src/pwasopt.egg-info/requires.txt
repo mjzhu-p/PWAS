@@ -4,3 +4,4 @@ pulp
 pyDOE
 sklearn
 pycddlib
+pyparc

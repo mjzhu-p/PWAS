@@ -8,7 +8,6 @@ src/pwasopt/fit_surrogate_pwasp.py
 src/pwasopt/integ_encoder.py
 src/pwasopt/main_pwas.py
 src/pwasopt/main_pwasp.py
-src/pwasopt/parc.py
 src/pwasopt/pref_fun.py
 src/pwasopt/pref_fun1.py
 src/pwasopt/prob_setup.py
