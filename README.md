@@ -60,13 +60,14 @@ Here, we show a detailed example using PWAS/PWASp to optimize the parameters of 
 ### Problem discription
 
 **_Objective_**:
-Maximize the classification accuracy on test data.
+Maximize the classification accuracy on test data. 
+Note PWAS optimize using **minimization**, and therefore we minimize the negative of classification accuracy.
 
 **_Optimization variables_**:
 $n_c = 4$ (number of continuous variables), $n_{\rm int} = 1$ (number of integer variables, **ordinal**), 
-and $n_d = 3$ (number of categorical variables, non-**ordinal**) with $n_{i} = 2$, for $i = 1, 2, 3$. 
+and $n_d = 3$ (number of categorical variables, **non-ordinal**) with $n_{i} = 2$, for $i = 1, 2, 3$. 
 Each categorical variable ($n_{di}$) can be either 0 or 1. 
-The bounds are $\ell_x = [10^{-6},10^{-6}\ 0.001\ 10^{-6}]\tr$, $u_x = [1 10 1 5]\tr$; $\ell_y = 1$, $u_y = 10$.
+The bounds are $\ell_x = [10^{-6}\ 10^{-6}\ 0.001\ 10^{-6}]'$, $u_x = [1\  10\  1\  5]'$; $\ell_y = 1$, $u_y = 10$.
 
 **_Notes_**:
 The 0.7/0.3 stratified train/test split ratio is applied. 
@@ -222,10 +223,11 @@ X2 = np.array(optimizer2.X)
 fbest_seq2 = optimizer2.fbest_seq
 
 ~~~
-Below we show the best values `fbest_seq1` found by PWAS
+Below we show the best values `fbest_seq1` found by PWAS. 
 
-<img src="./figures/PWAS_XG-MNIST.png" alt="drawing" width=40%/>
- 
+<p align = "center">
+<img src="./figures/PWAS_XG-MNIST.png" alt="drawing" width=60%/>
+</p>
 
 
 <a name="contributors"><a>
