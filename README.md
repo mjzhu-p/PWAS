@@ -61,7 +61,7 @@ Here, we show a detailed example using PWAS/PWASp to optimize the parameters of 
 
 **_Objective_**:
 Maximize the classification accuracy on test data. 
-Note PWAS optimize using **minimization**, and therefore we minimize the negative of classification accuracy.
+Note PWAS/PWASp optimizes the problem using **minimization**, and therefore we minimize the negative of classification accuracy.
 
 **_Optimization variables_**:
 $n_c = 4$ (number of continuous variables), $n_{\rm int} = 1$ (number of integer variables, **ordinal**), 
@@ -182,10 +182,9 @@ from pwasopt.main_pwas import PWAS
 
 key = 0
 np.random.seed(key)  # rng default for reproducibility
-print("Solve the problem by feeding the simulator/synthetic decision-maker directly into the PWAS solver")
 
 delta_E = 0.05  # trade-off hyperparameter in acquisition function between exploitation of surrogate and exploration of exploration function
-acq_stage = 'multi-stage'  # can specify whether to solve the acquisition step in one or multiple stages (as noted in Section 3.4 in [1]. Default: `multi-stage`
+acq_stage = 'multi-stage'  # can specify whether to solve the acquisition step in one or multiple stages (as noted in Section 3.4 in the paper [1]. Default: `multi-stage`
 feasible_sampling = True  # can specify whether infeasible samples are allowed. Default True
 K_init = 20  # number of initial PWA partitions
 
@@ -204,7 +203,6 @@ fbest_seq1 = optimizer1.fbest_seq
 
 #### Solve by passing the function evaluation step-by step
 ~~~python
-print("Solve the problem incrementally (i.e., provide the function evaluation at each iteration)")
 optimizer2 = PWAS(fun, lb, ub, delta_E, nc, nint, nd, X_d, nsamp, maxevals,  # here, fun is a placeholder passed to PWAS, not used
                  feasible_sampling= feasible_sampling,
                  isLin_eqConstrained=isLin_eqConstrained, Aeq=Aeq, beq=beq,
@@ -229,6 +227,120 @@ Below we show the best values `fbest_seq1` found by PWAS.
 <img src="./figures/PWAS_XG-MNIST.png" alt="drawing" width=60%/>
 </p>
 
+
+### Solve use PWASp
+When solve with PWASp, instead of using the function evaluations, we solve a preference-based optimization problem 
+with preference function $\pi(x_1,x_2)$, $x_1,x_2\in\mathbb{R}^n$
+within the finite bounds `lb` $\leq x\leq$ `ub` (see Section 4 of [[1]](#ref1)).
+
+Similarly to PWAS, one can solve the optimization problem either by 
+explicitly passing the preference indicator/synthetic preference function to PWASp, or by passing 
+the expressed preference `pref_eval` step-by step.
+
+_Note_: for this example, we use `fun` as a **synthetic decision maker** (`synthetic_dm = True`) to express preferences. However, the explicit evaluation of `fun` is unknow to PWASp.
+
+- If `synthetic_dm = True`, we have included two preference indicator functions `pref_fun.py` and `pref_fun1.py` 
+to provide preferences based on function evaluations and constraint satisfaction.
+- If `synthetic_dm = False`, one need to pass a `fun` such that given two decision vectors,
+output -1, 0, or 1 depending on the expressed preferences.
+
+#### Solve by explicitly passing the preference indicator 
+
+~~~python
+from pwasopt.main_pwasp import PWASp 
+
+key = 0
+np.random.seed(key)  # rng default for reproducibility
+
+delta_E = 1  # trade-off hyperparameter in acquisition function between exploitation of surrogate and exploration of exploration function
+optimizer1 = PWASp(fun, lb, ub, delta_E, nc, nint, nd, X_d, nsamp, maxevals, feasible_sampling= feasible_sampling,  
+                 isLin_eqConstrained=isLin_eqConstrained, Aeq=Aeq, beq=beq,
+                 isLin_ineqConstrained=isLin_ineqConstrained, Aineq=Aineq, bineq=bineq,
+                 K=K_init, categorical=False,
+                 acq_stage=acq_stage, synthetic_dm = True)  
+
+xopt1 = optimizer1.solve()
+X1 = np.array(optimizer1.X)
+fbest_seq1 = list(map(fun, X1[optimizer1.ibest_seq]))
+fbest1 = min(fbest_seq1)
+~~~
+
+#### Solve by passing the expressed preference step-by step
+~~~python
+from pwasopt.pref_fun1 import PWASp_fun1  # import the preference indicator function
+from pwasopt.pref_fun import PWASp_fun
+
+optimizer2 = PWASp(fun, lb, ub, delta_E, nc, nint, nd, X_d, nsamp, maxevals, feasible_sampling= feasible_sampling,  # fun is a placeholder here
+                 isLin_eqConstrained=isLin_eqConstrained, Aeq=Aeq, beq=beq,
+                 isLin_ineqConstrained=isLin_ineqConstrained, Aineq=Aineq, bineq=bineq,
+                 K=K_init, categorical=False,
+                 acq_stage=acq_stage, synthetic_dm = True)
+
+comparetol = 1e-4
+if isLin_ineqConstrained or isLin_eqConstrained:
+    pref_fun = PWASp_fun1(fun, comparetol, optimizer2.prob.Aeq, optimizer2.prob.beq, optimizer2.prob.Aineq, optimizer2.prob.bineq)  # preference function object
+else:
+    pref_fun = PWASp_fun(fun, comparetol)
+pref = lambda x, y, x_encoded, y_encoded: pref_fun.eval(x, y, x_encoded, y_encoded)
+pref_fun.clear()
+
+xbest2, x2, xsbest2, xs2 = optimizer2.initialize()  # get first two random samples
+for k in range(maxevals-1):
+    pref_eval = pref(x2, xbest2, xs2, xsbest2)  # evaluate preference
+    x2 = optimizer2.update(pref_eval)
+    xbest2 = optimizer2.xbest
+X2 = np.array(optimizer2.X[:-1])
+xopt2 = xbest2
+fbest_seq2 = list(map(fun, X2[optimizer2.ibest_seq]))
+fbest2 = min(fbest_seq2)
+
+~~~
+Below we show the best values `fbest_seq1` found by PWAS. 
+
+<p align = "center">
+<img src="./figures/PWASp_XG-MNIST.png" alt="drawing" width=60%/>
+</p>
+
+
+### Include constraints
+
+We note below how to include constraints if present. 
+
+_Note_:  current package only supports **linear** equality/inequality constraints.
+
+- `Aeq`: np array, dimension: (# of linear eq. const by n_encoded), where n_encoded is the length of the optimization variable 
+**AFTER** being **encoded**, the coefficient matrix for the linear equality constraints
+- `beq`: np array, dimension: (n_encode by 1), the RHS of the linear eq. constraints
+- `Aineq`: np array, dimension: (# of linear ineq. const by n_encoded), the coefficient matrix for the linear inequality constraints
+**AFTER** being **encoded** the coefficient matrix for the linear equality constraints
+- `bineq`: np array, dimension: (n_encode by 1) the RHS of the linear ineq. constraints
+- **Make sure to update the `Aeq` and `Aineq` with the one-hot encoded categorical variables, if present.**
+
+~~~python
+# if there is equality constraints
+isLin_eqConstrained = True
+
+if isLin_eqConstrained:  # an example
+    Aeq = np.array([1.6295, 1])
+    beq = np.array([3.0786])
+
+
+# if there is inequality constraints
+isLin_ineqConstrained = True  # (Aineq x <= bineq)
+# specify the constraint matrix and right-hand-side vector
+if isLin_ineqConstrained:  # an example
+    Aineq = np.array([[1.6295, 1],
+                   [0.5, 3.875],
+                   [-4.3023, -4],
+                   [-2, 1],
+                   [0.5, -1]])
+    bineq = np.array([[3.0786],
+                   [3.324],
+                   [-1.4909],
+                   [0.5],
+                   [0.5]])
+
+~~~
 
 <a name="contributors"><a>
 ## Contributors
