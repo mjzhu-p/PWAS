@@ -235,8 +235,6 @@ fbest_seq2 = optimizer2.fbest_seq
 Below we show the best values `fbest_seq1` found by PWAS. 
 
 <p align = "center">
-
-[comment]: <> (<img src="./figures/PWAS_XG-MNIST.png" alt="drawing" width=60%/>)
 <img src="https://github.com/mjzhu-p/PWAS/blob/main/figures/PWAS_XG-MNIST.png" alt="drawing" width=60%/>
 </p>
 
