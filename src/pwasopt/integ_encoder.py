@@ -39,7 +39,7 @@ class integ_encoder:
         nc = self.nc
         nint = self.nint
         int_interval = self.int_interval
-        max_interval = round(max(int_interval))
+        max_interval = int(round(max(int_interval)))
         lb = self.lb
         ub = self.ub
 

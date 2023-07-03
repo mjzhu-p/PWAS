@@ -150,7 +150,7 @@ def fun(x):
         'min_split_loss': xc[1],
         'subsample': xc[2],
         'reg_lambda': xc[3],
-        'max_depth': round(xint[0]),
+        'max_depth': int(round(xint[0])),
         'num_class': 10  # the number of classes that exist in this datset
     }
 

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pwasopt
-Version: 0.0.6
+Version: 0.0.10
 Summary: PWAS/PWASp - Global and Preference-based Optimization with Mixed Variables using (P)iece(w)ise (A)ffine (S)urrogates
 Author-email: Mengjia Zhu <mengjia.zhu@imtlucca.it>, Alberto Bemporad <alberto.bemporad@imtlucca.it>
 Project-URL: Homepage, https://github.com/mjzhu-p/PWAS
@@ -164,7 +164,7 @@ def fun(x):
         'min_split_loss': xc[1],
         'subsample': xc[2],
         'reg_lambda': xc[3],
-        'max_depth': round(xint[0]),
+        'max_depth': int(round(xint[0])),
         'num_class': 10  # the number of classes that exist in this datset
     }
 

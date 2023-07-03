@@ -445,10 +445,10 @@ class PWAS:
             aux = z[self.prob.nc+j]
             if self.prob.scale_vars and (not self.prob.int_encoded):
                 aux = aux * self.prob.dd_int[j] + self.prob.d0_int[j]
-            string = string + " x" + str(j + self.prob.nc + 1) + " = " + ('%5d' % round(aux)) + "   "
+            string = string + " x" + str(j + self.prob.nc + 1) + " = " + ('%5d' % int(round(aux))) + "   "
         for j in range(self.prob.nd):
             aux = z[self.prob.nci+j]
-            string = string + " x" + str(j + self.prob.nci + 1) + " = " + ('%5d' % round(aux))
+            string = string + " x" + str(j + self.prob.nci + 1) + " = " + ('%5d' % int(round(aux)))
 
         print(string)
         return

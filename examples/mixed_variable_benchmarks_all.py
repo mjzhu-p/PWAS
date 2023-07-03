@@ -316,7 +316,7 @@ def mixed_variable_benchmarks_all(benchmark, runPWAS, savefigs):
                 'min_split_loss': xc[1],
                 'subsample': xc[2],
                 'reg_lambda': xc[3],
-                'max_depth': round(xint[0]),
+                'max_depth': int(round(xint[0])),
                 'num_class': 10  # the number of classes that exist in this datset
             }
 
@@ -379,7 +379,7 @@ def mixed_variable_benchmarks_all(benchmark, runPWAS, savefigs):
                     space[h.name] = x[i]
                     i += 1
                 elif i == nc:
-                    space[h.name] = round(x[i])
+                    space[h.name] = int(round(x[i]))
                     i += 1
                 else:
                     if x[i] == 0.:

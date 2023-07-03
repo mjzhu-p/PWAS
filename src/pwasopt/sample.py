@@ -580,7 +580,7 @@ class init_sampl:
 
         # constraints for one-hot encoded xint
         for i in range(nint):
-            prob += (plp.lpSum(xint[h][0] for h in range(round(sum(int_interval[:i])), round(sum(int_interval[:i + 1])))) == 1)
+            prob += (plp.lpSum(xint[h][0] for h in range(int(round(sum(int_interval[:i]))), int(round(sum(int_interval[:i + 1]))))) == 1)
 
         # constraints satisfaction
         if isLin_eqConstrained:

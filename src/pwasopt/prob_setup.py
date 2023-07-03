@@ -33,7 +33,7 @@ class problem_defn:
         self.nci = nc + nint
         self.nd = nd
         self.X_d = X_d
-        self.sum_X_d = round(sum(X_d))
+        self.sum_X_d = int(round(sum(X_d)))
         self.nvars = self.nci + nd
         self.nvars_encoded = self.nci + self.sum_X_d
 
@@ -211,7 +211,7 @@ class problem_defn:
         if nint >0:
             int_interval = np.round(self.ub_original[self.nc:self.nci] - self.lb_original[self.nc:self.nci] + 1)
             self.int_prod = np.prod(int_interval)
-            int_sum = round(np.sum(int_interval))
+            int_sum = int(round(np.sum(int_interval)))
             self.int_interval = int_interval
         else:
             self.int_prod = 0
@@ -225,7 +225,7 @@ class problem_defn:
                 Aeq_int_encode[:,:nc] = self.Aeq[:,:nc]
                 Aeq_int_encode[:,nc+int_sum:] = self.Aeq[:,self.nci:]
                 for i in range(nint):
-                    Aeq_int_encode[:, nc + round(np.sum(int_interval[:i])):nc + round(np.sum(int_interval[:i + 1]))] = \
+                    Aeq_int_encode[:, nc + int(round(np.sum(int_interval[:i]))):nc + int(round(np.sum(int_interval[:i + 1])))] = \
                         self.Aeq[:,nc+i].dot(np.arange(self.lb[nc+i],self.ub[nc+i]+1))
 
                 self.Aeq = Aeq_int_encode
@@ -235,7 +235,7 @@ class problem_defn:
                 Aineq_int_encode[:, :nc] = self.Aineq[:, :nc]
                 Aineq_int_encode[:, nc + int_sum:] = self.Aineq[:, self.nci:]
                 for i in range(nint):
-                    Aineq_int_encode[:, nc + round(np.sum(int_interval[:i])):nc + round(np.sum(int_interval[:i + 1]))] = \
+                    Aineq_int_encode[:, nc + int(round(np.sum(int_interval[:i]))):nc + int(round(np.sum(int_interval[:i + 1])))] = \
                         self.Aineq[:,nc+i].reshape((-1,1)).dot(np.arange(self.lb_original[nc + i], self.ub_original[nc + i] + 1).reshape((1,-1)))
 
                 self.Aineq = Aineq_int_encode
@@ -244,8 +244,8 @@ class problem_defn:
             self.nci_encoded = self.nc + self.nint_encoded
             self.nvars_encoded = self.nci_encoded + self.sum_X_d
 
-            lb_int_encoded = np.zeros(self.nvars_encoded)
-            ub_int_encoded = np.ones(self.nvars_encoded)
+            lb_int_encoded = np.zeros(int(round(self.nvars_encoded)))
+            ub_int_encoded = np.ones(int(round(self.nvars_encoded)))
             lb_int_encoded[:self.nc] = self.lb[:self.nc]
             ub_int_encoded[:self.nc] = self.ub[:self.nc]
             self.lb = lb_int_encoded
