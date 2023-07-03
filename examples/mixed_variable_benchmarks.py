@@ -575,7 +575,7 @@ if runPWASp:
     xopt1 = optimizer1.solve()
     X1 = np.array(optimizer1.X)
     fbest_seq1 = list(map(fun, X1[optimizer1.ibest_seq]))
-    fbest1 = min(fbest_seq1)
+    fopt1 = min(fbest_seq1)
 
 elif runPWAS:
     delta_E = 0.05
@@ -619,7 +619,7 @@ if runPWASp:
     X2 = np.array(optimizer2.X[:-1])
     xopt2 = xbest2
     fbest_seq2 = list(map(fun, X2[optimizer2.ibest_seq]))
-    fbest2 = min(fbest_seq2)
+    fopt2 = min(fbest_seq2)
 
 
 elif runPWAS:

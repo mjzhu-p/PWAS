@@ -31,6 +31,8 @@ import matplotlib.pyplot as plt
 runPWAS = 1   #0 = run PWASp, 1 = run PWAS
 runPWASp = 1-runPWAS
 
+savefigs = False
+
 # 2-D benchmarks with box constraints (NLP)
 # benchmark = "PWA_example"
 # benchmark="camelsixhumps"
@@ -974,7 +976,7 @@ if runPWASp:
     xopt1 = optimizer1.solve()
     X = np.array(optimizer1.X)
     fbest_seq1 = list(map(fun, X[optimizer1.ibest_seq]))
-    fbest1 = min(fbest_seq1)
+    fopt1 = min(fbest_seq1)
 
 elif runPWAS:
     delta_E = 0.05
@@ -1015,6 +1017,15 @@ else:
 
 thelegend.append("optimum")
 plt.legend(thelegend)
+
+if savefigs:
+    if runPWAS:
+        solverName = "PWAS"
+    else:
+        solverName = "PWASp"
+
+    plt.savefig("%s.png" % (solverName + '_' + benchmark), dpi=300)
+
 plt.show()
 
 
