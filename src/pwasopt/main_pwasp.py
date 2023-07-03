@@ -308,7 +308,7 @@ class PWASp:
                                              N, omega, gamma, Kf, dF)
                     if np.isnan(z1).any():
                         print(
-                            'The optimal solution is not reached within the timeLimit in GUROBI, solution is sampled using \'acq_surrogate\' function in acquisition.py.')
+                            'The optimal solution is not reached within the timeLimit, solution is sampled using \'acq_surrogate\' function in acquisition.py.')
                         if int_encoded:
                             z = self.AL.acq_surrogate_intEncoded(a, b, omega, gamma, Kf, dF)
                         else:
@@ -330,7 +330,7 @@ class PWASp:
                                                   z1.reshape(sum_X_d, 1), a, b, N, omega, gamma, Kf, dF)
                             if np.isnan(z2).any():
                                 print(
-                                    'The optimal solution is not reached within the timeLimit in GUROBI, solution is sampled using \'acq_surrogate\' function in acquisition.py.')
+                                    'The optimal solution is not reached within the timeLimit, solution is sampled using \'acq_surrogate\' function in acquisition.py.')
                                 if int_encoded:
                                     z = self.AL.acq_surrogate_intEncoded(a, b, omega, gamma, Kf, dF)
                                 else:
@@ -347,7 +347,7 @@ class PWASp:
                                              N, omega, gamma, Kf, dF)
                         if np.isnan(z3).any():
                             print(
-                                'The optimal solution is not reached within the timeLimit in GUROBI, solution is sampled using \'acq_surrogate\' function in acquisition.py.')
+                                'The optimal solution is not reached within the timeLimit, solution is sampled using \'acq_surrogate\' function in acquisition.py.')
                             if int_encoded:
                                 z = self.AL.acq_surrogate_intEncoded(a, b, omega, gamma, Kf, dF)
                             else:
@@ -366,7 +366,7 @@ class PWASp:
                     z = self.AL.acq_explore(X_curr, a, b, N, omega, gamma, Kf, dF)
                 if np.isnan(z).any():
                     print(
-                        'The optimal solution is not reached within the timeLimit in GUROBI, solution is sampled using \'acq_surrogate\' function in acquisition.py.')
+                        'The optimal solution is not reached within the timeLimit, solution is sampled using \'acq_surrogate\' function in acquisition.py.')
                     z = self.AL.acq_surrogate(a, b, omega, gamma, Kf, dF)
 
             else:

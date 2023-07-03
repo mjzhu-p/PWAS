@@ -42,9 +42,16 @@ pip install pwasopt
 * [pyDOE](https://pythonhosted.org/pyDOE/)
 * [pycddlib](https://pypi.org/project/pycddlib/)
 
-**Note**: PWAS/PWASp use `GUROBI` as the default solver to solve the MILP problem of acquisition optimization, 
+### External dependencies:
+MILP solver:
+- PWAS/PWASp use `GUROBI` as the default solver to solve the MILP problem of acquisition optimization, 
 which is found to be the most robust during benchmark testing. Alternatively, we also include `GLPK`, which may introduce
-errors occasionally depending on the test problem and initial samples.
+errors occasionally depending on the test problem and initial samples. User can also switch to another MILP solver by editing the
+relevant codes in `acquisition.py` and `sample.py`. Check the compatability of the MILP solver with `pulp` (the LP modeler) 
+at the [project webpage](https://pypi.org/project/PuLP/).
+- `GUROBI`: [academic licenses](https://www.gurobi.com/academia/academic-program-and-licenses/)
+- `GLPK`: [project webpage](https://www.gnu.org/software/glpk/)
+  - [step-by-step explanation for the installation on Stack Overflow](https://stackoverflow.com/questions/17513666/installing-glpk-gnu-linear-programming-kit-on-windows)
 
 
 <a name="basic-usage"></a>
@@ -228,7 +235,9 @@ fbest_seq2 = optimizer2.fbest_seq
 Below we show the best values `fbest_seq1` found by PWAS. 
 
 <p align = "center">
-<img src="./figures/PWAS_XG-MNIST.png" alt="drawing" width=60%/>
+
+[comment]: <> (<img src="./figures/PWAS_XG-MNIST.png" alt="drawing" width=60%/>)
+<img src="https://github.com/mjzhu-p/PWAS/blob/main/figures/PWAS_XG-MNIST.png" alt="drawing" width=60%/>
 </p>
 
 
@@ -303,7 +312,7 @@ fbest2 = min(fbest_seq2)
 Below we show the best values `fbest_seq1` found by PWASp. Note that function evaluations here are shown solely for demonstration purposes, which are unknown to PWASp during the solution process.
 
 <p align = "center">
-<img src="./figures/PWASp_XG-MNIST.png" alt="drawing" width=60%/>
+<img src="https://github.com/mjzhu-p/PWAS/blob/main/figures/PWASp_XG-MNIST.png" alt="drawing" width=60%/>
 </p>
 
 
