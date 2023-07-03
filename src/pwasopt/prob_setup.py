@@ -33,7 +33,7 @@ class problem_defn:
         self.nci = nc + nint
         self.nd = nd
         self.X_d = X_d
-        self.sum_X_d = sum(X_d)
+        self.sum_X_d = round(sum(X_d))
         self.nvars = self.nci + nd
         self.nvars_encoded = self.nci + self.sum_X_d
 
