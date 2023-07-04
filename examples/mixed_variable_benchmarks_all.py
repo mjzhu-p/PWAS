@@ -361,8 +361,8 @@ def mixed_variable_benchmarks_all(benchmark, runPWAS, savefigs):
         MAXPOOL3X3 = 'maxpool3x3'
         NUM_VERTICES = 7
 
-        data_path = "data_nasbench"
-        # data_path = "c:\\users\mengjia\Desktop\IMT\z-Research\\a_on_going_project\PWA-pref-based opt\code\pwas\\finalize_pls\pwas_Jan_2023"
+        # data_path = "data_nasbench"
+        data_path = "~/Desktop/PWAS/examples"
         if data_path == "data_nasbench":
             errstr = "please indicate the location of file 'nasbench_only108.tfrecord',which is availalbe for download at https://storage.googleapis.com/nasbench/nasbench_only108.tfrecord"
             print(errstr)
