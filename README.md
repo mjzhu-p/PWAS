@@ -50,6 +50,7 @@ errors occasionally depending on the test problem and initial samples. User can 
 relevant codes in `acquisition.py` and `sample.py`. Check the compatability of the MILP solver with `pulp` (the LP modeler) 
 at the [project webpage](https://pypi.org/project/PuLP/).
 - `GUROBI`: [academic licenses](https://www.gurobi.com/academia/academic-program-and-licenses/)
+  - [configure GUROBI with python](https://support.gurobi.com/hc/en-us/articles/360044290292-How-do-I-install-Gurobi-for-Python-)
 - `GLPK`: [project webpage](https://www.gnu.org/software/glpk/)
   - [step-by-step explanation for the installation on Stack Overflow](https://stackoverflow.com/questions/17513666/installing-glpk-gnu-linear-programming-kit-on-windows)
 
@@ -61,6 +62,10 @@ at the [project webpage](https://pypi.org/project/PuLP/).
 Examples of benchmark testing using PWAS/PWASp can be found in the `examples` folder:
 * `mixed_variable_benchmarks.py`: benchmark testing on constrained/unconstrained mixed-variable problems
   * Test results are reported in the [paper](http://arxiv.org/abs/2302.04686)
+  * _Note_: to test benchmark `NAS-CIFAR10`
+    * download the data from its [GitHub repository](https://storage.googleapis.com/nasbench/nasbench_only108.tfrecord)
+    * indicate the `data_path` in `mixed_variable_benchmarks.py`
+    * since the dataset is compiled with `TensorFlow` version 1.x, **python version < 3.8** is  required (with `TensorFlow` < 2.x)
 * `other_benchmarks.py`: various NLP, MIP, INLP, MIP Benchmarks tested with PWAS/PWASp
   * Test results are reported in [test_results_on_other_benchmarks.pdf](https://github.com/mjzhu-p/PWAS/blob/main/examples/test_results_on_other_benchmarks.pdf) under the `examples` folder 
 

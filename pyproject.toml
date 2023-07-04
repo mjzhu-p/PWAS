@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pwasopt"
-version = "0.0.10"
+version = "0.0.11"
 authors = [
   { name="Mengjia Zhu", email="mengjia.zhu@imtlucca.it" },
   { name="Alberto Bemporad", email="alberto.bemporad@imtlucca.it" },
@@ -12,7 +12,7 @@ authors = [
 description = "PWAS/PWASp - Global and Preference-based Optimization with Mixed Variables using (P)iece(w)ise (A)ffine (S)urrogates"
 readme = "README.md"
 requires-python = ">=3.7"
-dependencies = ["numpy","scipy","pulp","pyDOE","sklearn","pycddlib","pyparc"]
+dependencies = ["numpy","scipy","pulp","pyDOE","scikit-learn","pycddlib","pyparc"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
