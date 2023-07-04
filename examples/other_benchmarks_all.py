@@ -965,7 +965,7 @@ def other_benchmarks_all(benchmark, runPWAS, savefigs):
     key = 0
     np.random.seed(key)  # rng default for reproducibility
     ####################################################################################
-    print("Solve the problem by feeding the simulator/synthetic decision-maker directly into the PWAS/PWASp solver")
+    # print("Solve the problem by feeding the simulator/synthetic decision-maker directly into the PWAS/PWASp solver")
     # Solve global optimization problem
     if runPWASp:
         delta_E = 1

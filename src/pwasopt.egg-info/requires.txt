@@ -2,6 +2,6 @@ numpy
 scipy
 pulp
 pyDOE
-sklearn
+scikit-learn
 pycddlib
 pyparc
