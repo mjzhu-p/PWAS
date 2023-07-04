@@ -362,7 +362,7 @@ def mixed_variable_benchmarks_all(benchmark, runPWAS, savefigs):
         NUM_VERTICES = 7
 
         # data_path = "data_nasbench"
-        data_path = "~/Desktop/PWAS/examples"
+        data_path = "Desktop/PWAS/examples"
         if data_path == "data_nasbench":
             errstr = "please indicate the location of file 'nasbench_only108.tfrecord',which is availalbe for download at https://storage.googleapis.com/nasbench/nasbench_only108.tfrecord"
             print(errstr)
