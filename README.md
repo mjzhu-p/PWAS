@@ -37,7 +37,7 @@ pip install pwasopt
 * numpy
 * scipy
 * pulp
-* sklearn
+* scikit-learn
 * [pyparc](https://pypi.org/project/pyparc/)
 * [pyDOE](https://pythonhosted.org/pyDOE/)
 * [pycddlib](https://pypi.org/project/pycddlib/)
