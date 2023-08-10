@@ -37,7 +37,7 @@ pip install pwasopt
 * numpy
 * scipy
 * pulp
-* sklearn
+* scikit-learn
 * [pyparc](https://pypi.org/project/pyparc/)
 * [pyDOE](https://pythonhosted.org/pyDOE/)
 * [pycddlib](https://pypi.org/project/pycddlib/)
@@ -113,8 +113,8 @@ X_d = [2, 2, 2]  # possible number of classes for each categorical variables
 
 lb_cont_int = np.array([1e-6, 1e-6, 0.001, 1e-6, 1])  # lower bounds for continuous and integer variables
 ub_cont_int = np.array([1, 10, 0.99999, 5, 10])  # upper bounds for continuous and integer variables
-lb_binary = np.zeros((nd))  # lower bounds for one-hot encoded categorical variables, note the dimension is same as nd, it will be updated within the code
-ub_binary = np.array([1, 1, 1]) # upper bounds for one-hot encoded categorical variables
+lb_binary = np.zeros((nd))  # lower bounds for categorical variables, note the dimension is the same as nd, it will be updated within the code
+ub_binary = np.array([1, 1, 1]) # upper bounds for categorical variables, note it is (the number of classes-1) (since in the one-hot encoder, the counter started at 0)
 lb = np.hstack((lb_cont_int, lb_binary)) # combined lower and upper bounds for the optimization variables
 ub = np.hstack((ub_cont_int, ub_binary))
 
