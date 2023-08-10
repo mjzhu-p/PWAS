@@ -156,6 +156,11 @@ class PWAS:
         self.ibest = None
         self.xbest = None
         self.xsbest = None
+        self.a = None
+        self.b = None
+        self.omega = None
+        self.gamma = None
+        self.Kf = None
         self.fbest_seq = list()  # keep track of the current best evaluation
         self.ibest_seq = list()  # keep track of the index of the current best decision vector
         self.isfeas_seq = list() # keep track of the feasibility of the tested decision vectors
@@ -295,6 +300,12 @@ class PWAS:
             b = predictor.intercept_
             omega = predictor.omega
             gamma = predictor.gamma
+
+            self.Kf = Kf
+            self.a = a
+            self.b = b
+            self.omega = omega
+            self.gamma = gamma
 
             dF = self.Fmax - self.Fmin
             if dF == -np.inf:  # no feasible samples found so far
@@ -452,6 +463,24 @@ class PWAS:
 
         print(string)
         return
+
+    def result_output(self):
+        out = {"xopt": self.xbest,
+               "fopt": self.fbest,
+               "ibest": self.ibest,
+               "ibestseq": self.ibest_seq,
+               "isfeas_seq": self.isfeas_seq,
+               "X": self.X,
+               "F": self.F,
+               "a": self.a,
+               "b": self.b,
+               "omega": self.omega,
+               "gamma": self.gamma,
+               "kf": self.Kf,
+               "self": self
+               }
+
+        return out
 
 
 
