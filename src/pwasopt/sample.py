@@ -72,6 +72,8 @@ class init_sampl:
 
         self.timelimit = prob.timelimit
 
+        self.integer_cut = prob.integer_cut
+
 
     def initial_sampling(self):
         """
@@ -84,7 +86,7 @@ class init_sampl:
         """
 
         nsamp = self.nsamp
-        maxevals = self.maxevals
+        # maxevals = self.maxevals
         feasible_sampling = self.feasible_sampling
         isLin_eqConstrained = self.isLin_eqConstrained
         Aeq = self.Aeq
@@ -106,9 +108,9 @@ class init_sampl:
         dd_int = self.dd_int
         d0_int = self.d0_int
 
-        f = self.f
+        # f = self.f
         Xs = np.zeros((nsamp, nvars_encoded))
-        F = np.zeros((nsamp, 1))
+        # F = np.zeros((nsamp, 1))
 
         use_solver = False
         if (not feasible_sampling) or ((not isLin_eqConstrained) and (not isLin_ineqConstrained)):
@@ -182,8 +184,10 @@ class init_sampl:
                 nk = 0
                 n_iter = 0
                 n_iter_2 = 0
+                first_iter = True
                 while (nk < nsamp):
-                    if nn*nvars < 2000 or nk >0:
+                    if nn*nvars < 2000 or nk >0 or first_iter:
+                        first_iter = False
                         XX = lhs(nvars, nn, "m")
                         XX = XX * (np.ones((nn, 1)) * (self.ub_nvars[:nvars] - self.lb_nvars[:nvars])) + np.ones(
                             (nn, 1)) * self.lb_nvars[:nvars]
@@ -346,6 +350,8 @@ class init_sampl:
         dd_int = self.dd_int
         d0_int = self.d0_int
 
+        integer_cut = self.integer_cut
+
         X_curr_c = Xs[:, :nci]
         X_curr_d = Xs[:, nci:]
 
@@ -375,6 +381,11 @@ class init_sampl:
         beta_int = plp.LpVariable.dicts("beta_int",  range(1), lowBound=0, cat=plp.LpContinuous)
         ham_dist_scaled = plp.LpVariable.dicts("ham_dist_scaled", range(1), lowBound=0, cat=plp.LpContinuous)
 
+        if integer_cut and (nc < 1 and nint > 0):
+            already_sampled = [[plp.LpVariable(f"var{j}_same_as_previous_{i}", cat=plp.LpBinary) for j in range(nint+sum_X_d)] for i in range(N)]
+            as_z1 = [[plp.LpVariable(f"as_z1{j}_same_as_previous_{i}", cat=plp.LpBinary) for j in range(nint+sum_X_d)] for i in range(N)]
+            as_z2 = [[plp.LpVariable(f"as_z2{j}_same_as_previous_{i}", cat=plp.LpBinary) for j in range(nint + sum_X_d)] for i in range(N)]
+
         # Objective function
         if (N > 1 or fes_init):
             cost = - plp.lpSum(ham_dist_scaled) - plp.lpSum(beta) - plp.lpSum(beta_int) # max the distance between points
@@ -389,8 +400,8 @@ class init_sampl:
 
         # up and lower bound of xint
         for h in range(nint):
-            prob += xint[h][0] <= ub[nc + h]
-            prob += xint[h][0] >= lb[nc + h]
+            prob += xint[h][0] <= np.round(ub[nc + h])
+            prob += xint[h][0] >= np.round(lb[nc + h])
 
         # relationship between xint and xint_scaled
         for h in range(nint):
@@ -469,6 +480,33 @@ class init_sampl:
             prob += beta[0] == 0
         if nint <1:
             prob += beta_int[0] == 0
+
+
+        if integer_cut and (nc < 1 and nint >0): # include relevant variables for integer cut (when continuous variable is not present but integer variables are present)
+            M_intCut = 1.0e5
+            for j in range(nint+sum_X_d):
+                for i in range(N):
+                    if j < nint:
+                        if scale_vars:
+                            prob += xc[nc+j][0] - X_curr_c[i,nc+j] + 0.5 <= M_intCut * as_z1[i][j]
+                            prob += X_curr_c[i, nc + j] - xc[nc + j][0] - 0.5 <= M_intCut * (1 - as_z1[i][j])
+                            prob += xc[nc+j][0] - X_curr_c[i,nc+j] - 0.5 <= M_intCut * (1 - as_z2[i][j])
+                            prob += X_curr_c[i, nc + j] - xc[nc + j][0] + 0.5 <= M_intCut * as_z2[i][j]
+                        else:
+                            prob += xint[j][0] - X_curr_c[i, nc + j] + 0.5 <= M_intCut * as_z1[i][j]
+                            prob += X_curr_c[i, nc + j] - xint[j][0] - 0.5 <= M_intCut * (1 - as_z1[i][j])
+                            prob += xint[j][0] - X_curr_c[i, nc + j] - 0.5 <= M_intCut * (1 - as_z2[i][j])
+                            prob += X_curr_c[i, nc + j] - xint[j][0] + 0.5 <= M_intCut * as_z2[i][j]
+                    else:
+                        prob += xd[j-nint][0] - X_curr_d[i,j-nint] + 0.5 <= M_intCut * as_z1[i][j]
+                        prob += X_curr_d[i,j-nint] - xd[j-nint][0] - 0.5 <= M_intCut * (1 - as_z1[i][j])
+                        prob += xd[j-nint][0] - X_curr_d[i,j-nint] - 0.5 <= M_intCut * (1 - as_z2[i][j])
+                        prob += X_curr_d[i,j-nint] - xd[j-nint][0] + 0.5 <= M_intCut * as_z2[i][j]
+
+                    prob += already_sampled[i][j] >= as_z1[i][j] + as_z2[i][j] - 1
+
+            for i in range(N):
+                prob += sum(already_sampled[i]) <= nint+sum_X_d - 1
 
 
 

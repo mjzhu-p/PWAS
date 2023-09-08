@@ -51,6 +51,7 @@ class active_learn:
         self.Aineq = prob.Aineq
         self.bineq = prob.bineq
 
+        self.integer_cut = prob.integer_cut
 
     def discrete_explore(self, X, zbest_nci, a, b, N, omega, gamma, Kf, dF):
         """
@@ -274,8 +275,8 @@ class active_learn:
 
         # up and lower bound of xint
         for h in range(nint):
-            prob += xint[h][0] <= ub[nc + h]
-            prob += xint[h][0] >= lb[nc + h]
+            prob += xint[h][0] <= np.round(ub[nc + h])
+            prob += xint[h][0] >= np.round(lb[nc + h])
 
         # relationship between xint and xint_scaled, i.e., xint_c
         for h in range(nint):
@@ -783,6 +784,7 @@ class active_learn:
         dd_int = self.dd_int
         d0_int = self.d0_int
 
+        X_curr_c = X[:, :nci]
         X_curr_d = X[:, nci:]
 
         delta_E = self.delta_E
@@ -794,6 +796,8 @@ class active_learn:
         isLin_ineqConstrained = self.isLin_ineqConstrained
         Aineq = self.Aineq
         bineq = self.bineq
+
+        integer_cut = self.integer_cut
 
         prob = plp.LpProblem('acq_explore', plp.LpMinimize)
         xc = plp.LpVariable.dicts("xc", (range(nci), range(1)), cat=plp.LpContinuous)
@@ -820,6 +824,12 @@ class active_learn:
         beta_int = plp.LpVariable.dicts("beta_int", range(1), lowBound=0, cat=plp.LpContinuous)
         cat_ham_dist_scaled = plp.LpVariable.dicts("cat_ham_dist_scaled", range(1), lowBound=0, cat=plp.LpContinuous)
 
+        if integer_cut and (nc < 1 and nint > 0):
+            already_sampled = [[plp.LpVariable(f"var{j}_same_as_previous_{i}", cat=plp.LpBinary) for j in range(nint+sum_X_d)] for i in range(N)]
+            as_z1 = [[plp.LpVariable(f"as_z1{j}_same_as_previous_{i}", cat=plp.LpBinary) for j in range(nint+sum_X_d)] for i in range(N)]
+            as_z2 = [[plp.LpVariable(f"as_z2{j}_same_as_previous_{i}", cat=plp.LpBinary) for j in range(nint + sum_X_d)] for i in range(N)]
+
+
         # Objective function
         cost = - delta_E * (plp.lpSum(cat_ham_dist_scaled) + plp.lpSum(beta) + plp.lpSum(beta_int)) + plp.lpSum(y) / dF
         prob += cost
@@ -831,8 +841,8 @@ class active_learn:
 
         # up and lower bound of xint
         for h in range(nint):
-            prob += xint[h][0] <= ub[nc + h]
-            prob += xint[h][0] >= lb[nc + h]
+            prob += xint[h][0] <= np.round(ub[nc + h])
+            prob += xint[h][0] >= np.round(lb[nc + h])
 
         # relationship between xint and xint_scaled
         for h in range(nint):
@@ -967,6 +977,34 @@ class active_learn:
                     prob += (plp.lpSum(delta_p_int[i][j] + delta_m_int[i][j] for j in range(nint)) >= 1)
         else:
             prob += beta_int[0] == 0
+
+
+        if integer_cut and (nc < 1 and nint >0): # include relevant variables for integer cut (when continuous variable is not present but integer variables are present)
+            M_intCut = 1.0e5
+            for j in range(nint+sum_X_d):
+                for i in range(N):
+                    if j < nint:
+                        if scale_vars:
+                            prob += xc[nc+j][0] - X_curr_c[i,nc+j] + 0.5 <= M_intCut * as_z1[i][j]
+                            prob += X_curr_c[i, nc + j] - xc[nc + j][0] - 0.5 <= M_intCut * (1 - as_z1[i][j])
+                            prob += xc[nc+j][0] - X_curr_c[i,nc+j] - 0.5 <= M_intCut * (1 - as_z2[i][j])
+                            prob += X_curr_c[i, nc + j] - xc[nc + j][0] + 0.5 <= M_intCut * as_z2[i][j]
+                        else:
+                            prob += xint[j][0] - X_curr_c[i, nc + j] + 0.5 <= M_intCut * as_z1[i][j]
+                            prob += X_curr_c[i, nc + j] - xint[j][0] - 0.5 <= M_intCut * (1 - as_z1[i][j])
+                            prob += xint[j][0] - X_curr_c[i, nc + j] - 0.5 <= M_intCut * (1 - as_z2[i][j])
+                            prob += X_curr_c[i, nc + j] - xint[j][0] + 0.5 <= M_intCut * as_z2[i][j]
+                    else:
+                        prob += xd[j-nint][0] - X_curr_d[i,j-nint] + 0.5 <= M_intCut * as_z1[i][j]
+                        prob += X_curr_d[i,j-nint] - xd[j-nint][0] - 0.5 <= M_intCut * (1 - as_z1[i][j])
+                        prob += xd[j-nint][0] - X_curr_d[i,j-nint] - 0.5 <= M_intCut * (1 - as_z2[i][j])
+                        prob += X_curr_d[i,j-nint] - xd[j-nint][0] + 0.5 <= M_intCut * as_z2[i][j]
+
+                    prob += already_sampled[i][j] >= as_z1[i][j] + as_z2[i][j] - 1
+
+
+            for i in range(N):
+                prob += sum(already_sampled[i]) <= nint+sum_X_d - 1
 
 
         try:
@@ -1295,8 +1333,8 @@ class active_learn:
 
         # up and lower bound of xint
         for h in range(nint):
-            prob += xint[h][0] <= ub[nc + h]
-            prob += xint[h][0] >= lb[nc + h]
+            prob += xint[h][0] <= np.round(ub[nc + h])
+            prob += xint[h][0] >= np.round(lb[nc + h])
 
         # relationship between xint and xint_scaled
         for h in range(nint):

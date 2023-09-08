@@ -51,7 +51,7 @@ class PWAS:
                  K= None, scale_vars = True, shrink_range = True, alpha=1.0e-5, sigma=1, separation=None, maxiter=100, cost_tol=1e-4,
                  min_number=None, fit_on_partition=True, softmax_solver='lbfgs', softmax_maxiter=None, beta=None,
                  initialization=None, verbose=None, categorical=False, timelimit=None, epsDeltaF=None,
-                 acq_stage = 'multi-stage', sepvalue=None, synthetic_dm = False):
+                 acq_stage = 'multi-stage', sepvalue=None, synthetic_dm = False, integer_cut = False):
 
         """ PWAS - Optimization with mixed variables using Piecewise Affine surrogate
         (C) Jan, 2023, M.Zhu
@@ -129,7 +129,7 @@ class PWAS:
                                  isLin_eqConstrained, Aeq, beq, isLin_ineqConstrained, Aineq, bineq,
                                  K, scale_vars, shrink_range, alpha, sigma, separation, maxiter, cost_tol, min_number,
                                  fit_on_partition, softmax_solver, softmax_maxiter, beta, initialization,
-                                 verbose, categorical, timelimit, epsDeltaF, acq_stage, sepvalue, synthetic_dm)
+                                 verbose, categorical, timelimit, epsDeltaF, acq_stage, sepvalue, synthetic_dm,integer_cut)
 
         # obtain the encoder if categorical variables are involved
         if nd > 0:
@@ -238,7 +238,10 @@ class PWAS:
         nvars_encoded = self.prob.nvars_encoded
         sum_X_d = self.prob.sum_X_d
 
-        acq_stage = self.prob.acq_stage
+        if self.prob.integer_cut:
+            acq_stage = 'one-stage'
+        else:
+            acq_stage = self.prob.acq_stage
 
         self.F.append(f_val)
         f0 = f_val
@@ -398,7 +401,10 @@ class PWAS:
 
             self.xsnext = z.T.reshape(nvars_encoded)
             self.Xs = np.vstack((self.Xs,self.xsnext))
-            self.xnext = z_decoded.T.reshape(self.prob.nvars) * self.prob.dd_nvars+ self.prob.d0_nvars
+            if self.prob.scale_vars:
+                self.xnext = z_decoded.T.reshape(self.prob.nvars) * self.prob.dd_nvars+ self.prob.d0_nvars
+            else:
+                self.xnext = z_decoded.T.reshape(self.prob.nvars)
             if nint >0:
                 self.xnext[nc:nci] = np.round(self.xnext[nc:nci])
 
@@ -476,7 +482,7 @@ class PWAS:
                "b": self.b,
                "omega": self.omega,
                "gamma": self.gamma,
-               "kf": self.Kf,
+               "Kf": self.Kf,
                "self": self
                }
 

@@ -19,6 +19,8 @@ class cat_encoder:
         self.X_d = prob.X_d
         self.nci = prob.nci
         self.nci_encoded = prob.nci_encoded
+        self.lb = prob.lb_original
+        self.ub = prob.ub_original
 
     def cat_encoder(self):
         """
@@ -36,6 +38,9 @@ class cat_encoder:
         nd = self.nd
         X_d = self.X_d
         max_cat = max(X_d)
+        lb = self.lb
+        ub = self.ub
+        nci = self.nci
 
         xenc_gen = np.array(np.zeros([max_cat, nd]))
 
@@ -47,7 +52,7 @@ class cat_encoder:
             sys.exit(1)
 
         for ind in range(nd):
-            x_d_ind = np.arange(X_d[ind])
+            x_d_ind = np.arange(lb[nci + ind], ub[nci + ind] + 1).reshape((1,-1))
             xenc_gen[:X_d[ind], ind] = x_d_ind
 
         encoder = enc.fit(xenc_gen)

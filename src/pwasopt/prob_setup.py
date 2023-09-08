@@ -22,10 +22,12 @@ class problem_defn:
                  isLin_eqConstrained, Aeq, beq, isLin_ineqConstrained, Aineq, bineq, K, scale_vars, shrink_range,
                  alpha, sigma, separation, maxiter, cost_tol, min_number,
                  fit_on_partition, softmax_solver, softmax_maxiter, beta, initialization,
-                 verbose, categorical,timelimit, epsDeltaF, acq_stage, sepvalue, synthetic_dm):
+                 verbose, categorical,timelimit, epsDeltaF, acq_stage, sepvalue, synthetic_dm, integer_cut):
 
         self.synthetic_dm = synthetic_dm
         self.isPref = isPref
+
+        self.integer_cut = integer_cut
 
         self.delta_E = delta_E
         self.nc = nc
@@ -210,7 +212,7 @@ class problem_defn:
 
         if nint >0:
             int_interval = np.round(self.ub_original[self.nc:self.nci] - self.lb_original[self.nc:self.nci] + 1)
-            self.int_prod = np.prod(int_interval)
+            self.int_prod = np.prod(int_interval, dtype=np.float64) # it is forced to float to check the value and prevent numpy overflow
             int_sum = int(round(np.sum(int_interval)))
             self.int_interval = int_interval
         else:
@@ -226,7 +228,7 @@ class problem_defn:
                 Aeq_int_encode[:,nc+int_sum:] = self.Aeq[:,self.nci:]
                 for i in range(nint):
                     Aeq_int_encode[:, nc + int(round(np.sum(int_interval[:i]))):nc + int(round(np.sum(int_interval[:i + 1])))] = \
-                        self.Aeq[:,nc+i].dot(np.arange(self.lb[nc+i],self.ub[nc+i]+1))
+                        self.Aeq[:,nc+i].reshape((-1,1)).dot(np.arange(self.lb_original[nc+i],self.ub_original[nc+i]+1).reshape((1,-1)))
 
                 self.Aeq = Aeq_int_encode
 
