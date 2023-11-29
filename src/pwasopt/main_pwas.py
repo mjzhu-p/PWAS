@@ -473,6 +473,7 @@ class PWAS:
     def result_output(self):
         out = {"xopt": self.xbest,
                "fopt": self.fbest,
+               "fbest_seq": self.fbest_seq,
                "ibest": self.ibest,
                "ibestseq": self.ibest_seq,
                "isfeas_seq": self.isfeas_seq,
