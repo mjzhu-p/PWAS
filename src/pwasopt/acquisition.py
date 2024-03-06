@@ -1201,7 +1201,7 @@ class active_learn:
                 ind_1 = list(np.where(X_curr_int[i, :] == 1)[0])
                 int_sum_ham_dist += plp.lpSum(xint[h][0] for h in ind_0) + plp.lpSum(1 - xint[h][0] for h in ind_1)
 
-            prob += int_ham_dist_scaled == 1 / (nd * N) * int_sum_ham_dist
+            prob += int_ham_dist_scaled == 1 / (nint * N) * int_sum_ham_dist
         else:
             prob += int_ham_dist_scaled[0] == 0
 

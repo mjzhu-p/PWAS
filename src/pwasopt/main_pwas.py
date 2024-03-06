@@ -186,7 +186,7 @@ class PWAS:
         return isfeas
 
 
-    def initialize(self):
+    def initialize(self, initial_scheme = None, encoded_input = None, decoded_input = None):
         """
         Initialize the problem
             - obtain the initial samples to query
@@ -195,8 +195,25 @@ class PWAS:
             self.xnext: 1D array
                 the initial sample to query
         """
-        s = init_sampl(self.prob)
-        Xs, X = s.initial_sampling()
+        if initial_scheme is None:
+            s = init_sampl(self.prob)
+            Xs, X = s.initial_sampling()
+        else:
+            if (decoded_input is None) and (encoded_input is None) :
+                errstr_external_input = "Please specify initial input"
+                print(errstr_external_input)
+                sys.exit(1)
+            else:
+                if (encoded_input is None):
+                    X = decoded_input
+                    Xs = self.XtoXs(X)
+                elif (decoded_input is None):
+                    Xs = encoded_input
+                    X = self.XstoX(Xs)
+                else:
+                    X = decoded_input
+                    Xs = encoded_input
+
         self.X = X
         self.Xs = Xs
         self.xnext = self.X[0]
@@ -417,7 +434,7 @@ class PWAS:
         self.iter += 1
         return self.xnext
 
-    def solve(self):
+    def solve(self,initial_scheme = None, encoded_input = None, decoded_input = None):
         """
         If the simulator/fun have already be integrated with the PWAS solver,
             - use solve() to solve the problem directly
@@ -429,7 +446,13 @@ class PWAS:
                 function evaluation at xbest
         """
         t_all = time.time()
-        x = self.initialize()  # x is unscaled and/or decoded
+
+        if not (decoded_input is None) or not (encoded_input is None):
+            initial_scheme = 'External'
+
+        x = self.initialize(initial_scheme = initial_scheme,
+                            encoded_input = encoded_input,
+                            decoded_input = decoded_input)  # x is unscaled and/or decoded
         fun = self.prob.f
 
         for k in range(self.prob.maxevals):
@@ -445,7 +468,83 @@ class PWAS:
         return self.xbest, self.fbest
 
 
-    def results_display(self, N, z, fz, fbest, ibest):
+    def XtoXs(self, X_toScale_and_encode):
+
+        """
+        Used to scale and encode the input opt. variables
+        """
+        nvars_encoded = self.prob.nvars_encoded
+        nc = self.prob.nc
+        nint = self.prob.nint
+        nci = self.prob.nci
+        nd = self.prob.nd
+        nvars = self.prob.nvars
+        N = X_toScale_and_encode.shape[0] # number of samples in the input matrix
+        Xs = np.zeros((N,nvars_encoded))
+        Xs[:, :nvars] = X_toScale_and_encode
+
+        if self.prob.scale_vars:
+            Xs[:, :nc] = (Xs[:, :nc] - (np.ones((N, 1)) * self.prob.d0[:nc])) * (
+                    np.ones((N, 1)) * 1 / self.prob.dd[:nc])
+            if nint and (not self.prob.int_encoded):
+                Xs[:, nc:nci] = (Xs[:, nc:nci] - (np.ones((N, 1)) * self.prob.d0_int)) * (
+                        np.ones((N, 1)) * 1 / self.prob.dd_int)
+
+        EC_int = integ_encoder(self.prob)
+        encode_int = EC_int.encode
+        EC_cat = cat_encoder(self.prob)
+        encode_cat = EC_cat.encode
+
+        X_sampl_decoded = Xs[:, :nvars].copy()
+        if self.prob.int_encoded and nd > 0:
+            X_sampl_encoded_int = encode_int(X_sampl_decoded, self.encoder_int)
+            X_sampl_encoded = encode_cat(X_sampl_encoded_int, self.encoder_cat)
+        elif self.prob.int_encoded:
+            X_sampl_encoded = encode_int(X_sampl_decoded, self.encoder_int)
+        elif nd > 0:
+            X_sampl_encoded = encode_cat(X_sampl_decoded, self.encoder_cat)
+        if self.prob.int_encoded or nd > 0:
+            Xs = X_sampl_encoded
+
+        return Xs
+
+    def XstoX(self, Xs_toScale_and_decode):
+
+        """
+        Used to scale and encode the input opt. variables
+        """
+        # nvars_encoded = self.prob.nvars_encoded
+        # nc = self.prob.nc
+        # nint = self.prob.nint
+        # nci = self.prob.nci
+        nd = self.prob.nd
+        nvars = self.prob.nvars
+        N = Xs_toScale_and_decode.shape[0]  # number of samples in the input matrix
+        # X = np.zeros((N,nvars))
+        Xs = Xs_toScale_and_decode
+
+        EC_int = integ_encoder(self.prob)
+        decode_int = EC_int.decode
+        EC_cat = cat_encoder(self.prob)
+        decode_cat = EC_cat.decode
+
+        X_sampl_decoded = Xs[:, :].copy()
+        if self.prob.int_encoded and nd > 0:
+            X_sampl_decoded_int = decode_int(X_sampl_decoded, self.encoder_int)
+            X_sampl_decoded = decode_cat(X_sampl_decoded_int, self.encoder_cat)
+        elif self.prob.int_encoded:
+            X_sampl_decoded = decode_int(X_sampl_decoded, self.encoder_int)
+        elif nd > 0:
+            X_sampl_decoded = decode_cat(X_sampl_decoded, self.encoder_cat)
+
+        if self.prob.scale_vars:
+            X = list(X_sampl_decoded * (np.ones((N, 1)) * self.prob.dd_nvars) + np.ones((N, 1)) * self.prob.d0_nvars)
+        else:
+            X = list(X_sampl_decoded)
+
+        return X
+
+    def results_display_2(self, N, z, fz, fbest, ibest):
         """
         Display intermediate results
         """
@@ -462,6 +561,27 @@ class PWAS:
             aux = z[self.prob.nc+j]
             if self.prob.scale_vars and (not self.prob.int_encoded):
                 aux = aux * self.prob.dd_int[j] + self.prob.d0_int[j]
+            string = string + " x" + str(j + self.prob.nc + 1) + " = " + ('%5d' % int(round(aux))) + "   "
+        for j in range(self.prob.nd):
+            aux = z[self.prob.nci+j]
+            string = string + " x" + str(j + self.prob.nci + 1) + " = " + ('%5d' % int(round(aux)))
+
+        print(string)
+        return
+
+    def results_display(self, N, z, fz, fbest, ibest):
+        """
+        Display intermediate results
+        """
+        z = z.reshape(self.prob.nci + self.prob.nd)
+        print("N = %4d, cost = %7.4f, best = %7.4f, N_best =%4d " % (N, fz, fbest,ibest))
+
+        string = ""
+        for j in range(self.prob.nc):
+            aux = z[j]
+            string = string + " x" + str(j + 1) + " = " + ('%7.4f' % aux) + "   "
+        for j in range(self.prob.nint):
+            aux = z[self.prob.nc+j]
             string = string + " x" + str(j + self.prob.nc + 1) + " = " + ('%5d' % int(round(aux))) + "   "
         for j in range(self.prob.nd):
             aux = z[self.prob.nci+j]
