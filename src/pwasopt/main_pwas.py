@@ -11,7 +11,8 @@ reference code:
 
 (C) 2021-2023 Mengjia Zhu, Alberto Bemporad
 """
-
+import os
+os.environ["OMP_NUM_THREADS"] = '1' # used to avoid memory leak when dealing with KMeans in the PARC code
 from pyparc.parc import PARC # https://github.com/bemporad/PyPARC, https://pypi.org/project/pyparc/
 from pwasopt.prob_setup import *
 from pwasopt.sample import *
