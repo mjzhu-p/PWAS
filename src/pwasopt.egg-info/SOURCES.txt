@@ -5,6 +5,7 @@ src/pwasopt/__init__.py
 src/pwasopt/acquisition.py
 src/pwasopt/categorical_encoder.py
 src/pwasopt/fit_surrogate_pwasp.py
+src/pwasopt/formatCatVar.py
 src/pwasopt/integ_encoder.py
 src/pwasopt/main_pwas.py
 src/pwasopt/main_pwasp.py

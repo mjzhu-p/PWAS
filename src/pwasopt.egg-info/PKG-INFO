@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pwasopt
-Version: 0.0.11
+Version: 0.1.0
 Summary: PWAS/PWASp - Global and Preference-based Optimization with Mixed Variables using (P)iece(w)ise (A)ffine (S)urrogates
 Author-email: Mengjia Zhu <mengjia.zhu@imtlucca.it>, Alberto Bemporad <alberto.bemporad@imtlucca.it>
 Project-URL: Homepage, https://github.com/mjzhu-p/PWAS
@@ -11,6 +11,13 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: pulp
+Requires-Dist: pyDOE
+Requires-Dist: scikit-learn
+Requires-Dist: pycddlib
+Requires-Dist: pyparc
 
 # Global and Preference-based Optimization with Mixed Variables using Piecewise Affine Surrogates (PWAS/PWASp)
 
@@ -51,7 +58,7 @@ pip install pwasopt
 * numpy
 * scipy
 * pulp
-* sklearn
+* scikit-learn
 * [pyparc](https://pypi.org/project/pyparc/)
 * [pyDOE](https://pythonhosted.org/pyDOE/)
 * [pycddlib](https://pypi.org/project/pycddlib/)
@@ -127,8 +134,8 @@ X_d = [2, 2, 2]  # possible number of classes for each categorical variables
 
 lb_cont_int = np.array([1e-6, 1e-6, 0.001, 1e-6, 1])  # lower bounds for continuous and integer variables
 ub_cont_int = np.array([1, 10, 0.99999, 5, 10])  # upper bounds for continuous and integer variables
-lb_binary = np.zeros((nd))  # lower bounds for one-hot encoded categorical variables, note the dimension is same as nd, it will be updated within the code
-ub_binary = np.array([1, 1, 1]) # upper bounds for one-hot encoded categorical variables
+lb_binary = np.zeros((nd))  # lower bounds for categorical variables, note the dimension is the same as nd, it will be updated within the code
+ub_binary = np.array([1, 1, 1]) # upper bounds for categorical variables, note it is (the number of classes-1) (since in the one-hot encoder, the counter started at 0)
 lb = np.hstack((lb_cont_int, lb_binary)) # combined lower and upper bounds for the optimization variables
 ub = np.hstack((ub_cont_int, ub_binary))
 
