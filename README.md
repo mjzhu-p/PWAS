@@ -39,7 +39,7 @@ pip install pwasopt
 * pulp >=2.8.0
 * scikit-learn >=1.3.0
 * threadpoolctl >=3.1.0 (for `KMeans` from `scikit-learn` to run properly)
-* [pyparc](https://pypi.org/project/pyparc/)
+* [pyparc](https://pypi.org/project/pyparc/) >=2.0.4
 * [pyDOE](https://pythonhosted.org/pyDOE/) >=0.3.8
 * [pycddlib](https://pypi.org/project/pycddlib/) >=2.1.7
 
@@ -52,6 +52,7 @@ relevant codes in `acquisition.py` and `sample.py`. Check the compatability of t
 at the [project webpage](https://pypi.org/project/PuLP/).
 - `GUROBI`: [academic licenses](https://www.gurobi.com/academia/academic-program-and-licenses/)
   - [configure GUROBI with python](https://support.gurobi.com/hc/en-us/articles/360044290292-How-do-I-install-Gurobi-for-Python-)
+  - [step-by-step explanation for the installation of Gurobi](https://support.gurobi.com/hc/en-us/articles/14799677517585-Getting-Started-with-Gurobi-Optimizer)
 - `GLPK`: [project webpage](https://www.gnu.org/software/glpk/)
   - [step-by-step explanation for the installation on Stack Overflow](https://stackoverflow.com/questions/17513666/installing-glpk-gnu-linear-programming-kit-on-windows)
 
