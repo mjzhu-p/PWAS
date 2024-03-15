@@ -1,7 +1,7 @@
-numpy
-scipy
-pulp
-pyDOE
-scikit-learn
-pycddlib
-pyparc
+numpy>=1.24.4
+scipy>=1.11.1
+pulp>=2.7.0
+pyDOE>=0.3.8
+scikit-learn>=1.3.0
+pycddlib==2.1.7
+pyparc==2.0.4
