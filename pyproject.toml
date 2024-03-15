@@ -13,7 +13,7 @@ description = "PWAS/PWASp - Global and Preference-based Optimization with Mixed 
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = [
-    "numpy>=1.24.4","scipy>=1.11,1","pulp>=2.7.0","pyDOE>=0.3.8","scikit-learn>=1.3.0","pycddlib==2.1.7","pyparc==2.0.4"]
+    "numpy>=1.24.4","scipy>=1.11.1","pulp>=2.7.0","pyDOE>=0.3.8","scikit-learn>=1.3.0","pycddlib==2.1.7","pyparc==2.0.4"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
