@@ -45,7 +45,7 @@ class integ_encoder:
 
         xenc_gen = np.array(np.zeros([max_interval, nint]))
 
-        enc = OneHotEncoder(drop=None, sparse=False)
+        enc = OneHotEncoder(drop=None, sparse_output=False)
 
         if nint != int_interval.shape[0]:
             errstr_nint = "The number of integer variables is not consistent with the length of int_interval (the list indicates number of possible integer values for each integer variables), please double check"

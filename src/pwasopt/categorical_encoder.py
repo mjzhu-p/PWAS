@@ -44,7 +44,7 @@ class cat_encoder:
 
         xenc_gen = np.array(np.zeros([max_cat, nd]))
 
-        enc = OneHotEncoder(drop=None, sparse=False)
+        enc = OneHotEncoder(drop=None, sparse_output=False)
 
         if nd != len(X_d):
             errstr_nd = "The number of discrete variables is not consistent with the length of X_d (the list indicates number of categorials for each discrete variables), please double check"
