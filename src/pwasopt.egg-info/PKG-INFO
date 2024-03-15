@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pwasopt
-Version: 0.1.1
+Version: 0.1.3
 Summary: PWAS/PWASp - Global and Preference-based Optimization with Mixed Variables using (P)iece(w)ise (A)ffine (S)urrogates
 Author-email: Mengjia Zhu <mengjia.zhu@imtlucca.it>, Alberto Bemporad <alberto.bemporad@imtlucca.it>
 Project-URL: Homepage, https://github.com/mjzhu-p/PWAS
@@ -11,13 +11,14 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: numpy>=1.24.4
+Requires-Dist: numpy>=1.24.3
 Requires-Dist: scipy>=1.11.1
-Requires-Dist: pulp>=2.7.0
+Requires-Dist: pulp>=2.8.0
 Requires-Dist: pyDOE>=0.3.8
 Requires-Dist: scikit-learn>=1.3.0
-Requires-Dist: pycddlib==2.1.7
-Requires-Dist: pyparc==2.0.4
+Requires-Dist: pycddlib>=2.1.7
+Requires-Dist: pyparc>=2.0.4
+Requires-Dist: threadpoolctl>=3.1.0
 
 # Global and Preference-based Optimization with Mixed Variables using Piecewise Affine Surrogates (PWAS/PWASp)
 
