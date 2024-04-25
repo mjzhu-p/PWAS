@@ -71,7 +71,14 @@ Examples of benchmark testing using PWAS/PWASp can be found in the `examples` fo
 * `other_benchmarks.py`: various NLP, MIP, INLP, MIP Benchmarks tested with PWAS/PWASp
   * Test results are reported in [test_results_on_other_benchmarks.pdf](https://github.com/mjzhu-p/PWAS/blob/main/examples/test_results_on_other_benchmarks.pdf) under the `examples` folder 
 
+### Case studies
+Experimental design with PWAS: [ExpDesign](https://github.com/MolChemML/ExpDesign)
+* Optimization of reaction conditions for Suzuki–Miyaura cross-coupling (fully categorical)
+* Optimization of crossed-barrel design to augment mechanical toughness (mixed-integer)
+* Solvent design for enhanced Menschutkin reaction rate (mixed-integer and categorical with linear constraints)
 
+
+### Illustrative example
 Here, we show a detailed example using PWAS/PWASp to optimize the parameters of the [`xgboost` algorithm](https://xgboost.readthedocs.io/en/stable/) for [`MNIST` classification](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html) task. 
 
 
