@@ -41,7 +41,7 @@ pip install pwasopt
 * threadpoolctl >=3.1.0 (for `KMeans` from `scikit-learn` to run properly)
 * [pyparc](https://pypi.org/project/pyparc/) >=2.0.4
 * [pyDOE](https://pythonhosted.org/pyDOE/) >=0.3.8
-* [pycddlib](https://pypi.org/project/pycddlib/) >=2.1.7
+* [pycddlib](https://pypi.org/project/pycddlib/) >=2.1.7, <3.0.0
 
 ### External dependencies:
 MILP solver:
