@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pwasopt
-Version: 0.1.3
+Version: 0.1.4
 Summary: PWAS/PWASp - Global and Preference-based Optimization with Mixed Variables using (P)iece(w)ise (A)ffine (S)urrogates
 Author-email: Mengjia Zhu <mengjia.zhu@imtlucca.it>, Alberto Bemporad <alberto.bemporad@imtlucca.it>
 Project-URL: Homepage, https://github.com/mjzhu-p/PWAS
@@ -11,14 +11,15 @@ Classifier: Operating System :: OS Independent
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: numpy>=1.24.3
+Requires-Dist: numpy<2.0.0,>=1.24.3
 Requires-Dist: scipy>=1.11.1
-Requires-Dist: pulp>=2.8.0
-Requires-Dist: pyDOE>=0.3.8
-Requires-Dist: scikit-learn>=1.3.0
-Requires-Dist: pycddlib>=2.1.7
+Requires-Dist: pulp==2.8.0
+Requires-Dist: pyDOE==0.3.8
+Requires-Dist: scikit-learn==1.3.0
+Requires-Dist: pycddlib<3.0.0,>=2.1.7
 Requires-Dist: pyparc>=2.0.4
-Requires-Dist: threadpoolctl>=3.1.0
+Requires-Dist: threadpoolctl==3.1.0
+Requires-Dist: cvxopt==1.2.6
 
 # Global and Preference-based Optimization with Mixed Variables using Piecewise Affine Surrogates (PWAS/PWASp)
 
@@ -55,14 +56,16 @@ pip install pwasopt
 
 
 ### Dependencies:
-* python 3
-* numpy
-* scipy
-* pulp
-* scikit-learn
-* [pyparc](https://pypi.org/project/pyparc/)
-* [pyDOE](https://pythonhosted.org/pyDOE/)
-* [pycddlib](https://pypi.org/project/pycddlib/)
+* python >=3.7
+* numpy >=1.24.3, <2.0.0
+* scipy >=1.11.1
+* pulp ==2.8.0
+* scikit-learn ==1.3.0
+* threadpoolctl ==3.1.0 (for `KMeans` from `scikit-learn` to run properly)
+* [pyparc](https://pypi.org/project/pyparc/) >=2.0.4
+* [pyDOE](https://pythonhosted.org/pyDOE/) ==0.3.8
+* [pycddlib](https://pypi.org/project/pycddlib/) >=2.1.7, <3.0.0
+* cvxopt ==1.2.6
 
 ### External dependencies:
 MILP solver:
@@ -73,6 +76,7 @@ relevant codes in `acquisition.py` and `sample.py`. Check the compatability of t
 at the [project webpage](https://pypi.org/project/PuLP/).
 - `GUROBI`: [academic licenses](https://www.gurobi.com/academia/academic-program-and-licenses/)
   - [configure GUROBI with python](https://support.gurobi.com/hc/en-us/articles/360044290292-How-do-I-install-Gurobi-for-Python-)
+  - [step-by-step explanation for the installation of Gurobi](https://support.gurobi.com/hc/en-us/articles/14799677517585-Getting-Started-with-Gurobi-Optimizer)
 - `GLPK`: [project webpage](https://www.gnu.org/software/glpk/)
   - [step-by-step explanation for the installation on Stack Overflow](https://stackoverflow.com/questions/17513666/installing-glpk-gnu-linear-programming-kit-on-windows)
 
@@ -91,7 +95,14 @@ Examples of benchmark testing using PWAS/PWASp can be found in the `examples` fo
 * `other_benchmarks.py`: various NLP, MIP, INLP, MIP Benchmarks tested with PWAS/PWASp
   * Test results are reported in [test_results_on_other_benchmarks.pdf](https://github.com/mjzhu-p/PWAS/blob/main/examples/test_results_on_other_benchmarks.pdf) under the `examples` folder 
 
+### Case studies
+Experimental design with PWAS: [ExpDesign](https://github.com/MolChemML/ExpDesign)
+* Optimization of reaction conditions for Suzuki–Miyaura cross-coupling (fully categorical)
+* Optimization of crossed-barrel design to augment mechanical toughness (mixed-integer)
+* Solvent design for enhanced Menschutkin reaction rate (mixed-integer and categorical with linear constraints)
 
+
+### Illustrative example
 Here, we show a detailed example using PWAS/PWASp to optimize the parameters of the [`xgboost` algorithm](https://xgboost.readthedocs.io/en/stable/) for [`MNIST` classification](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html) task. 
 
 
