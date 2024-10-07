@@ -37,12 +37,12 @@ pip install pwasopt
 * numpy >=1.24.3, <2.0.0
 * scipy >=1.11.1
 * pulp ==2.8.0
-* scikit-learn ==1.3.0
+* scikit-learn ==1.5.0
 * threadpoolctl ==3.1.0 (for `KMeans` from `scikit-learn` to run properly)
 * [pyparc](https://pypi.org/project/pyparc/) >=2.0.4
 * [pyDOE](https://pythonhosted.org/pyDOE/) ==0.3.8
 * [pycddlib](https://pypi.org/project/pycddlib/) >=2.1.7, <3.0.0
-* cvxopt ==1.2.6
+* cvxopt ==1.2.7
 
 ### External dependencies:
 MILP solver:
