@@ -22,7 +22,7 @@ We propose a novel surrogate-based global optimization algorithm, called PWAS, b
 remains unquantified. For more details on the method, please read our paper [Global and Preference-based Optimization with Mixed Variables using Piecewise Affine Surrogates](http://arxiv.org/abs/2302.04686). 
 
 <a name="cite-ZB23"><a>
-> [1] M. Zhu and A. Bemporad, "[Global and preference-based optimization with mixed variables using piecewise aﬃne surrogates](http://arxiv.org/abs/2302.04686)," *Submitted for publication*, 2023. [[bib entry](#ref1)]
+> [1] M. Zhu and A. Bemporad, "[Global and preference-based optimization with mixed variables using piecewise aﬃne surrogates]([http://arxiv.org/abs/2302.04686](https://doi.org/10.1007/s10957-024-02596-y))," _Journal of Optimization Theory and Applications_, vol. 204, no. 26, 2025. [[bib entry](#ref1)]
 
 <a name="install"></a>
 ## Installation
@@ -386,8 +386,10 @@ This software is distributed without any warranty. Please cite the paper below i
 @article{ZB23,
     author={M. Zhu, A. Bemporad},
     title={Global and Preference-based Optimization with Mixed Variables using Piecewise Affine Surrogates},
-    journal={arXiv preprint arXiv:2302.04686},
-    year=2023
+    journal={Journal of Optimization Theory and Applications},
+    volume={204},
+    number={26},
+    year={2025}
 }
 ```
 
